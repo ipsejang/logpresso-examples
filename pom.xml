@@ -21,15 +21,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<obfuscation.skip>true</obfuscation.skip>
 	</properties>
-	
-	<profiles>
-		<profile>
-			<id>obf</id>
-			<properties>
-				<obfuscation.skip>false</obfuscation.skip>
-			</properties>
-		</profile>
-	</profiles>
 
 	<repositories>
 		<repository>
@@ -41,16 +32,13 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>xserial</id>
-			<url>http://maven.xerial.org/repository/artifact/</url>
-		</repository>
 	</repositories>
 
 	<distributionManagement>
 		<repository>
 			<id>araqne</id>
-			<url>scp://repo.logpresso.com:2222/home/service/repo.logpresso.com/</url>
+			<name>Araqne</name>
+			<url>scp://staging.araqne.org:2222/home/service/araqne/</url>
 		</repository>
 	</distributionManagement>
 

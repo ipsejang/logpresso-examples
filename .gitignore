@@ -8,3 +8,7 @@ logpresso-perfclient.conf
 logpresso-sentry/logring.*
 */*.dep
 *.versionsBackup
+obj
+bin
+*.suo
+*.user
