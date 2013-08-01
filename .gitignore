@@ -1,0 +1,10 @@
+.settings
+.project
+.classpath
+target
+.DS_Store
+logpresso-perfclient.conf
+.*.swp
+logpresso-sentry/logring.*
+*/*.dep
+*.versionsBackup
