@@ -16,6 +16,8 @@ namespace Logpresso.Examples
 			{
 				Console.WriteLine(PrettyPrint(o));
 			}
+			cursor.Dispose();
+			client.Close();
 		}
 
 		private static string PrettyPrint(IDictionary dict)
