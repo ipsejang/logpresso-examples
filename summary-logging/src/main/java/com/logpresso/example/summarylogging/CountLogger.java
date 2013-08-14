@@ -48,8 +48,9 @@ public class CountLogger implements Runnable, LogCallback {
 			AtomicLong count = dayCounts.get(d);
 			long value = count.getAndSet(0);
 			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("day", d);
 			data.put("count", value);
-			storage.write(new Log(MYLOGSTAT, d, data));
+			storage.write(new Log(MYLOGSTAT, new Date(), data));
 		}
 	}
 
