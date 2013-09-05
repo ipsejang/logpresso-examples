@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.araqne.logdb.client.LogCursor;
 import org.araqne.logdb.client.LogDbClient;
 import org.araqne.logdb.client.LogQuery;
 
@@ -29,7 +28,6 @@ public class PagingQueryExample {
 	public static void main(String[] args) throws IOException {
 		long begin = System.currentTimeMillis();
 		LogDbClient client = null;
-		LogCursor cursor = null;
 		long count = 0;
 		int queryId = 0;
 
@@ -71,9 +69,6 @@ public class PagingQueryExample {
 				last = last + logs.size();
 			}
 		} finally {
-			if (cursor != null)
-				cursor.close();
-
 			if (client != null) {
 				client.removeQuery(queryId);
 				client.close();
