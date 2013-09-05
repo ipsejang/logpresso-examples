@@ -31,12 +31,13 @@ public class PagingQueryExample {
 		LogDbClient client = null;
 		LogCursor cursor = null;
 		long count = 0;
+		int queryId = 0;
 
 		try {
 			client = new LogDbClient();
 			client.connect("localhost", 8888, "araqne", "");
 
-			int queryId = client.createQuery("table limit=100000 iis");
+			queryId = client.createQuery("table limit=100000 iis");
 			client.startQuery(queryId);
 
 			long last = 0;
@@ -73,8 +74,10 @@ public class PagingQueryExample {
 			if (cursor != null)
 				cursor.close();
 
-			if (client != null)
+			if (client != null) {
+				client.removeQuery(queryId);
 				client.close();
+			}
 
 			long end = System.currentTimeMillis();
 			System.out.println("total " + count + " rows in " + (end - begin) + " ms");
