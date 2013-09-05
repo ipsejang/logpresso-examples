@@ -126,5 +126,6 @@
 		<module>index-tokenizer-example</module>
 		<module>summary-logging</module>
 		<module>java-query-tutorial</module>
+		<module>parser-tutorial</module>
 	</modules>
 </project>
