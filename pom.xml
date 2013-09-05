@@ -125,5 +125,6 @@
 		<module>logpresso-index-api</module>
 		<module>index-tokenizer-example</module>
 		<module>summary-logging</module>
+		<module>java-query-tutorial</module>
 	</modules>
 </project>
