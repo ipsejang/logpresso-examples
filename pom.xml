@@ -127,5 +127,6 @@
 		<module>summary-logging</module>
 		<module>java-query-tutorial</module>
 		<module>parser-tutorial</module>
+		<module>custom-syntax-tutorial</module>
 	</modules>
 </project>
