@@ -128,5 +128,6 @@
 		<module>java-query-tutorial</module>
 		<module>parser-tutorial</module>
 		<module>custom-syntax-tutorial</module>
+		<module>logger-tutorial</module>
 	</modules>
 </project>
