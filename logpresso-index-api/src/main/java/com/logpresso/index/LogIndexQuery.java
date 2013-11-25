@@ -15,11 +15,13 @@ import org.araqne.logdb.query.expr.Expression;
 public class LogIndexQuery {
 	private Date minDay;
 	private Date maxDay;
-	private Expression expr;
+	private BoundedExpression expr;
 	private Long limit;
 	private Long offset;
 	private boolean idOnly;
+	private String parserName;
 	private Collection<String> accessibleTables;
+	private boolean tokenizeTerm = false;
 
 	public Date getMinDay() {
 		return minDay;
@@ -37,11 +39,11 @@ public class LogIndexQuery {
 		this.maxDay = maxDay;
 	}
 
-	public void setExpr(Expression expr) {
+	public void setExpr(BoundedExpression expr) {
 		this.expr = expr;
 	}
 
-	public Expression getExpr() {
+	public BoundedExpression getExpr() {
 		return expr;
 	}
 
@@ -68,12 +70,28 @@ public class LogIndexQuery {
 	public void setIdOnly(boolean idOnly) {
 		this.idOnly = idOnly;
 	}
-	
+
+	public String getParserName() {
+		return parserName;
+	}
+
+	public void setParserName(String parserName) {
+		this.parserName = parserName;
+	}
+
 	public void setAccesibleTables(Collection<String> tables) {
 		this.accessibleTables = tables;
 	}
-	
-	public Collection<String> getAccesibleTables() {
+
+	public Collection<String> getAccessibleTables() {
 		return this.accessibleTables;
+	}
+	
+	public boolean getTokenizeTerm() {
+		return this.tokenizeTerm;
+	}
+
+	public void setTokenizeTerm(boolean b) {
+		this.tokenizeTerm = true;
 	}
 }

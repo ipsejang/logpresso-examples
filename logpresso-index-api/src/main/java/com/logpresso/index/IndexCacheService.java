@@ -4,6 +4,7 @@
 package com.logpresso.index;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface IndexCacheService {
@@ -22,4 +23,6 @@ public interface IndexCacheService {
 	void setConfig(String storage, String key, String value);
 
 	void unsetConfig(String storage, String key);
+
+	Map<String, Object> getCacheStats(String storage);
 }

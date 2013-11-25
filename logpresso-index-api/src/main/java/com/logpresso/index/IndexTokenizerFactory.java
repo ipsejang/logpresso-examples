@@ -4,6 +4,7 @@
 package com.logpresso.index;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -12,6 +13,16 @@ import java.util.Map;
  */
 public interface IndexTokenizerFactory {
 	String getName();
+
+	/**
+	 * @since 2.2.0
+	 */
+	String getDisplayName(Locale locale);
+
+	/**
+	 * @since 2.2.0
+	 */
+	String getDescription(Locale locale);
 
 	List<IndexConfigSpec> getConfigSpecs();
 

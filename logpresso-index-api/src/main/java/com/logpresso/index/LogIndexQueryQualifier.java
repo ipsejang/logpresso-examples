@@ -1,18 +1,23 @@
 package com.logpresso.index;
 
 public class LogIndexQueryQualifier {
-
 	private final String tableName;
 	private final String indexName;
+	private final String namespace;
 
-	public LogIndexQueryQualifier(String tableName, String indexName) {
+	public LogIndexQueryQualifier(String namespace, String tableName, String indexName) {
+		this.namespace = namespace;
 		this.tableName = tableName;
 		this.indexName = indexName;
 	}
 
+	public LogIndexQueryQualifier(String tableName, String indexName) {
+		this(null, tableName, indexName);
+	}
+	
 	@Override
 	public String toString() {
-		return "[tableName=" + tableName + ", indexName=" + indexName + "]";
+		return "[namespace= " + namespace + ", tableName=" + tableName + ", indexName=" + indexName + "]";
 	}
 
 	@Override
@@ -49,5 +54,12 @@ public class LogIndexQueryQualifier {
 	public String getTableName() {
 		return tableName;
 	}
+	
+	public String getIndexName() {
+		return indexName;
+	}
 
+	public String getNamespace() {
+		return this.namespace;
+	}
 }

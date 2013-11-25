@@ -63,4 +63,8 @@ public interface LogIndexer {
 	void clearBackgroundTasksDone();
 
 	void buildIndex(String tname, String iname, Date minDay, Date maxDay);
+
+	void setIndexRange(String tname, String iname, Date minDay, Date maxDay);
+
+	boolean isIndexExists(String tableName, String indexName, Date day);
 }

@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.logpresso</groupId>
-		<artifactId>logpresso-examples</artifactId>
+		<artifactId>com.logpresso</artifactId>
 		<version>1.0.0</version>
 	</parent>
 	<artifactId>logpresso-index-api</artifactId>
-	<version>2.0.5</version>
+	<version>2.3.1</version>
 	<packaging>bundle</packaging>
 	<name>Logpresso Index API</name>
 	<build>
@@ -56,58 +56,6 @@
 			<id>obf</id>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-install-plugin</artifactId>
-						<version>2.3.1</version>
-						<executions>
-							<execution>
-								<id>install-obfuscated-jar</id>
-								<phase>install</phase>
-								<goals>
-									<goal>install-file</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<packaging>jar</packaging>
-							<artifactId>${project.artifactId}</artifactId>
-							<groupId>${project.groupId}</groupId>
-							<version>${project.version}</version>
-							<file>
-								${project.build.directory}/${project.artifactId}-${project.version}.obf.jar
-							</file>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-deploy-plugin</artifactId>
-						<version>2.7</version>
-						<executions>
-							<execution>
-								<id>deploy-obfuscated-jar</id>
-								<phase>deploy</phase>
-								<goals>
-									<goal>deploy-file</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>default-deploy</id>
-								<phase>none</phase>
-							</execution>
-						</executions>
-						<configuration>
-							<packaging>jar</packaging>
-							<artifactId>${project.artifactId}</artifactId>
-							<groupId>${project.groupId}</groupId>
-							<version>${project.version}</version>
-							<file>
-								${project.build.directory}/${project.artifactId}-${project.version}.obf.jar
-							</file>
-							<repositoryId>${project.distributionManagement.repository.id}</repositoryId>
-							<url>${project.distributionManagement.repository.url}</url>
-						</configuration>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -116,12 +64,12 @@
 		<dependency>
 			<groupId>org.araqne</groupId>
 			<artifactId>araqne-logstorage</artifactId>
-			<version>2.1.4</version>
+			<version>2.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.araqne</groupId>
 			<artifactId>araqne-logdb</artifactId>
-			<version>1.4.0</version>
+			<version>1.9.0</version>
 		</dependency>
 	</dependencies>
 </project>

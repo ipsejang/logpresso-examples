@@ -16,7 +16,7 @@ import org.araqne.confdb.CollectionName;
  */
 @CollectionName("index")
 public class LogIndexSchema {
-	public static final float BF_LV1_DEFAULT_ERROR_RATE = 0.02f;
+	public static final float BF_LV1_DEFAULT_ERROR_RATE = 0.005f;
 	public static final int BF_LV1_DEFAULT_CAPACITY = 10000000;
 	public static final float BF_LV0_DEFAULT_ERROR_RATE = 0.001f;
 	public static final int BF_LV0_DEFAULT_CAPACITY = 1250000;
@@ -50,6 +50,7 @@ public class LogIndexSchema {
 	private double bloomFilterErrorRate0 = BF_LV0_DEFAULT_ERROR_RATE;
 	private int bloomFilterCapacity1 = BF_LV1_DEFAULT_CAPACITY;
 	private double bloomFilterErrorRate1 = BF_LV1_DEFAULT_ERROR_RATE;
+
 	private Date maxIndexDay;
 
 	@Override
@@ -107,9 +108,9 @@ public class LogIndexSchema {
 	}
 
 	public Date getMaxIndexDay() {
-		return this.maxIndexDay; 
+		return this.maxIndexDay;
 	}
-	
+
 	public void setMaxIndexDay(Date maxIndexDay) {
 		this.maxIndexDay = maxIndexDay;
 	}
@@ -204,17 +205,17 @@ public class LogIndexSchema {
 	public String toString() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-		String min = "unbound";
-		if (minIndexDay != null)
-			min = "from " + dateFormat.format(minIndexDay);
-
-		String bloomFilterConfig = "bloomfilter=" + useBloomFilter;
-		if (useBloomFilter) {
-			bloomFilterConfig += "[lv0: " + bloomFilterCapacity0 + ", " + bloomFilterErrorRate0 + ", ";
-			bloomFilterConfig += "lv1: " + bloomFilterCapacity1 + ", " + bloomFilterErrorRate1 + "]";
+		String period = null;
+		if (minIndexDay == null && maxIndexDay == null) {
+			period = "unbounded";
+		} else {
+			period = String.format("%s ~ %s",
+					minIndexDay == null ? "unlimited" : dateFormat.format(minIndexDay),
+					maxIndexDay == null ? "unlimited" : dateFormat.format(maxIndexDay));
 		}
+		String bloomFilterConfig = "bloomfilter=" + useBloomFilter;
 
-		return "id=" + id + ", table=" + tableName + ", index=" + indexName + ", period (" + min + "), " + bloomFilterConfig
+		return "id=" + id + ", table=" + tableName + ", index=" + indexName + ", period (" + period + "), " + bloomFilterConfig
 				+ ", tokenizer=" + tokenizerName + ", base path=" + basePath;
 	}
 

@@ -3,6 +3,8 @@
  */
 package com.logpresso.index;
 
+import java.util.Locale;
+
 /**
  * 
  * @author xeraph
@@ -16,4 +18,14 @@ public interface IndexConfigSpec {
 	String getName();
 
 	String getDescription();
+
+	/**
+	 * @since 2.2.0
+	 */
+	String getName(Locale locale);
+
+	/**
+	 * @since 2.2.0
+	 */
+	String getDescription(Locale locale);
 }

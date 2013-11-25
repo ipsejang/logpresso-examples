@@ -13,4 +13,6 @@ import java.util.Set;
  */
 public interface IndexTokenizer {
 	Set<String> tokenize(Map<String, Object> m);
+	
+	Set<String> tokenize(String s);
 }
