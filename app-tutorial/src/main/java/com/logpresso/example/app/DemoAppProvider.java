@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.felix.ipojo.annotations.Component;
@@ -101,7 +100,6 @@ public class DemoAppProvider implements AppProvider {
 
 	@Override
 	public Map<String, Object> getManifest() {
-		Map<String, Object> manifest = new HashMap<String, Object>();
 		return manifest;
 	}
 
