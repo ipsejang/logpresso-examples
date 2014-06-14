@@ -45,7 +45,8 @@ public class DemoAppProvider implements AppProvider {
 
 	@Override
 	public String getId() {
-		return "demo";
+		String id = (String) manifest.get("id");
+		return id;
 	}
 
 	@Validate

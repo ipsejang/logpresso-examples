@@ -1,0 +1,21 @@
+{
+	"id": "app-tutorial",
+	"display_names": {
+		"ko": "Logpresso App Tutorial"
+	},
+	"version": "1.0",
+	"description": "Logpresso App Tutorial",
+	"manifest_version": 0.1,
+	"feature": {
+		"programs": [
+			{
+				"id": "demo",
+				"display_names": {
+					"ko": "App Demo"
+				},
+				"script": ["app.js"],
+				"html": "index.html"
+			}
+		]
+	}
+}
