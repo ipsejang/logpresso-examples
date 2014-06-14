@@ -1,0 +1,30 @@
+<div class="sample-crud-container" ng-controller="SampleCRUDController">
+	<form class="well">
+		<div class="form-inline">
+			CODE: <input type="text" ng-model="insertData.code" required/>
+			NAME: <input type="text" ng-model="insertData.name" required/>
+			<button ng-click="insertNew()" class="btn btn-primary">insert</button>
+		</div>
+	</form>
+
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>CODE</th>
+				<th>NAME</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="data in dataSource">
+				<td>{{data.id}}</td>
+				<td>{{data.code}}</td>
+				<td>{{data.name}}</td>
+				<td>
+					<button class="btn btn-danger btn-mini" ng-click="$parent.removeServices(data)">&times;</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

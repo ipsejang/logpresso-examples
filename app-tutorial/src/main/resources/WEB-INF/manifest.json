@@ -9,9 +9,17 @@
 	"feature": {
 		"programs": [
 			{
-				"id": "demo",
+				"id": "logdb",
 				"display_names": {
-					"ko": "App Demo"
+					"ko": "App Logdb Demo"
+				},
+				"script": ["app.js"],
+				"html": "index.html"
+			},
+			{
+				"id": "crud",
+				"display_names": {
+					"ko": "App CRUD Demo"
 				},
 				"script": ["app.js"],
 				"html": "index.html"
