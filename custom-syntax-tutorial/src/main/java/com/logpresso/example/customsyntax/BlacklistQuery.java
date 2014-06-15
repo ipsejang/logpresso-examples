@@ -18,10 +18,10 @@ package com.logpresso.example.customsyntax;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.araqne.logdb.LogMap;
-import org.araqne.logdb.LogQueryCommand;
+import org.araqne.logdb.DriverQueryCommand;
+import org.araqne.logdb.Row;
 
-public class BlacklistQuery extends LogQueryCommand {
+public class BlacklistQuery extends DriverQueryCommand {
 	private Mode mode;
 	private BlacklistService blacklistService;
 
@@ -35,45 +35,47 @@ public class BlacklistQuery extends LogQueryCommand {
 	}
 
 	@Override
-	public void start() {
+	public String getName() {
+		return "blacklist";
+	}
+
+	@Override
+	public void run() {
 		if (mode != Mode.Query)
 			return;
 
-		try {
-			status = Status.Running;
-
-			for (String ip : blacklistService.getAll()) {
-				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("ip", ip);
-				write(new LogMap(m));
-			}
-
-			eof(false);
-		} catch (Throwable t) {
-			eof(true);
+		for (String ip : blacklistService.getAll()) {
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("ip", ip);
+			pushPipe(new Row(m));
 		}
 	}
 
 	@Override
-	public void push(LogMap m) {
-		String ip = (String) m.get("ip");
+	public boolean isDriver() {
+		return mode == Mode.Query;
+	}
+
+	@Override
+	public void onPush(Row row) {
+		String ip = (String) row.get("ip");
 		if (ip == null)
 			return;
 
 		if (mode == Mode.Match) {
 			if (blacklistService.contains(ip))
-				write(m);
+				pushPipe(row);
 		} else if (mode == Mode.Add) {
 			blacklistService.add(ip);
-			write(m);
+			pushPipe(row);
 		} else if (mode == Mode.Remove) {
 			blacklistService.remove(ip);
-			write(m);
+			pushPipe(row);
 		}
 	}
 
 	@Override
-	public boolean isReducer() {
-		return false;
+	public String toString() {
+		return "blacklist " + mode.toString().toLowerCase();
 	}
 }

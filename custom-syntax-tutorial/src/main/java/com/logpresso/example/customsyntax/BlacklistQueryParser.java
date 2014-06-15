@@ -19,18 +19,18 @@ import org.apache.felix.ipojo.annotations.Component;
 import org.apache.felix.ipojo.annotations.Invalidate;
 import org.apache.felix.ipojo.annotations.Requires;
 import org.apache.felix.ipojo.annotations.Validate;
-import org.araqne.logdb.LogQueryCommand;
-import org.araqne.logdb.LogQueryCommandParser;
-import org.araqne.logdb.LogQueryContext;
-import org.araqne.logdb.LogQueryParseException;
-import org.araqne.logdb.LogQueryParserService;
+import org.araqne.logdb.AbstractQueryCommandParser;
+import org.araqne.logdb.QueryCommand;
+import org.araqne.logdb.QueryContext;
+import org.araqne.logdb.QueryParseException;
+import org.araqne.logdb.QueryParserService;
 
 import com.logpresso.example.customsyntax.BlacklistQuery.Mode;
 
 @Component(name = "blacklist-query-parser")
-public class BlacklistQueryParser implements LogQueryCommandParser {
+public class BlacklistQueryParser extends AbstractQueryCommandParser {
 	@Requires
-	private LogQueryParserService queryParserService;
+	private QueryParserService queryParserService;
 
 	@Requires
 	private BlacklistService blacklistService;
@@ -52,7 +52,7 @@ public class BlacklistQueryParser implements LogQueryCommandParser {
 	}
 
 	@Override
-	public LogQueryCommand parse(LogQueryContext context, String commandString) {
+	public QueryCommand parse(QueryContext context, String commandString) {
 		BlacklistQuery.Mode mode;
 		String s = commandString.substring(getCommandName().length()).trim();
 		if (s.equals("query"))
@@ -64,7 +64,7 @@ public class BlacklistQueryParser implements LogQueryCommandParser {
 		else if (s.equals("match"))
 			mode = Mode.Match;
 		else
-			throw new LogQueryParseException("invalid-blacklist-mode", -1);
+			throw new QueryParseException("invalid-blacklist-mode", -1);
 
 		return new BlacklistQuery(blacklistService, mode);
 	}
