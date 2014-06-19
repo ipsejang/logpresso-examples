@@ -1,0 +1,26 @@
+<div class="devconsole-container" ng-controller="DevConsoleController">
+	<div>
+		<h5>msgbus</h5>
+		<textarea ng-model="modelMsgbus" style="width:90%"></textarea>
+	</div>
+	<div>
+		<h5>options</h5>
+		<textarea ng-model="modelOption" style="width:90%"></textarea>
+	</div>
+	<button ng-click="run();">run</button>
+	<button ng-click="clear()">clear</button>
+
+	<h5>success</h5>
+	<div class="well">
+		<code>
+			{{resultSuccess}}
+		</code>
+	</div>
+
+	<h5>failed</h5>
+	<div class="well">
+		<code>
+			{{resultFailed}}
+		</code>
+	</div>
+</div>
