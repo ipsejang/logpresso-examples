@@ -130,5 +130,6 @@
 		<module>custom-syntax-tutorial</module>
 		<module>logger-tutorial</module>
 		<module>app-tutorial</module>
+		<module>script-tutorial</module>
 	</modules>
 </project>
