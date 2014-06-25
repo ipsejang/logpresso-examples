@@ -16,6 +16,7 @@
 package com.logpresso.example.script;
 
 import org.araqne.api.Script;
+import org.araqne.api.ScriptArgument;
 import org.araqne.api.ScriptContext;
 import org.araqne.api.ScriptUsage;
 import org.slf4j.Logger;
@@ -44,7 +45,19 @@ public class SimpleScript implements Script {
 		context.print("Simple Service Message? ");
 		String line = context.readLine().trim();
 		service.setMessage(line);
-		logger.info("message set : " + line);
+		context.println("message set : " + line);
+	}
+	
+	public void getInterval(String[] args) {
+		context.println("Log write interval : " + service.getInterval());
+	}
+	
+	@ScriptUsage(description = "set log interval", arguments = {
+			@ScriptArgument(name = "interval", type = "int", description = "set log write interval in milliseconds") })
+	public void setInterval(String[] args) {
+		int interval = Integer.valueOf(args[0]);
+		service.setInterval(interval);
+		context.println("interval set : " + interval);
 	}
 
 }

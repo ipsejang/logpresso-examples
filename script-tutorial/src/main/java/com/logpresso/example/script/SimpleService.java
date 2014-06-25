@@ -23,4 +23,8 @@ public interface SimpleService {
 	String getMessage();
 	
 	void setMessage(String message);
+	
+	int getInterval();
+	
+	void setInterval(int interval);
 }

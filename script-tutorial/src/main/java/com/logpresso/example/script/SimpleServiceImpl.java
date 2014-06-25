@@ -59,9 +59,21 @@ public class SimpleServiceImpl implements SimpleService {
 		start();
 	}
 	
+	@Override
+	public int getInterval() {
+		return writeInterval;
+	}
+	
+	@Override
+	public void setInterval(int interval) {
+		this.writeInterval = interval;
+		stop();
+		start();
+	}
+	
 	private class MessageWriter implements Runnable {
 		private final Logger logger = LoggerFactory.getLogger(MessageWriter.class.getName());
-		private volatile int writeInterval;
+		private final int writeInterval;
 		private final String message;
 		
 		private volatile boolean doStop = false;
