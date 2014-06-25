@@ -45,6 +45,7 @@ public class SimpleScript implements Script {
 		context.print("Simple Service Message? ");
 		String line = context.readLine().trim();
 		service.setMessage(line);
+		logger.info("message set : " + line);
 		context.println("message set : " + line);
 	}
 	
@@ -57,7 +58,18 @@ public class SimpleScript implements Script {
 	public void setInterval(String[] args) {
 		int interval = Integer.valueOf(args[0]);
 		service.setInterval(interval);
+		logger.info("interval set : " + interval);
 		context.println("interval set : " + interval);
+	}
+	
+	@ScriptUsage(description = "string argument example", arguments = {
+		@ScriptArgument(name = "first", type = "string", description = "first argument"),
+		@ScriptArgument(name = "first", type = "string", description = "first argument"),
+		@ScriptArgument(name = "first", type = "string", description = "first argument") })
+	public void dummpyScript(String[] args) {
+		context.println("first - " + args[0]);
+		context.println("second - " + args[1]);
+		context.println("first - " + args[2]);
 	}
 
 }

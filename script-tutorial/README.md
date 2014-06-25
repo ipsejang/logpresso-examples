@@ -30,5 +30,9 @@ Simple service example that writes logs. User can modify log message by logpress
             1. interval: set log write interval in milliseconds (required)
     araqne@bombom demo> samplescript.setInterval 1000
     interval set : 1000
+    araqne@bombom demo> samplescript.dummpyScript eediom logpresso script
+    first - eediom
+    second - logpresso
+    first - script
     araqne@bombom demo> 
 ~~~
