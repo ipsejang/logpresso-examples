@@ -108,7 +108,6 @@ public class JdbcConsoleScript implements Script {
 			// DriverManager.getConnection() will fail if jdbc driver package
 			// did not imported by OSGi manifest.
 			conn = profile.connect();
-			conn.setReadOnly(profile.isReadOnly());
 
 			stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
