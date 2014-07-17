@@ -11,7 +11,7 @@
 				console.log(m);
 				
 				$scope.$apply(function() {
-					$scope.resultSuccess = JSON.stringify(m.body);
+					$scope.resultSuccess = m.body;
 				});
 			})
 			.failed(function(m, raw) {
@@ -20,7 +20,7 @@
 				console.log(raw);
 
 				$scope.$apply(function() {
-					$scope.resultFailed = JSON.stringify(raw);
+					$scope.resultFailed = raw;
 				});
 			})
 		}
