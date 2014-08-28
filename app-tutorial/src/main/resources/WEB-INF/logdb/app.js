@@ -5,6 +5,7 @@
 		console.log('-------------- SampleLogdbServiceController -----------------')
 		var instance = serviceLogdb.create(12341234);
 
+		console.clear();
 		console.log(instance);
 
 		var q = instance.query('table logpresso_query_logs', 100)
@@ -46,6 +47,20 @@
 		$scope.queryString = '';
 		$scope.queryResult;
 		$scope.numPageSize = 20;
+		
+		$scope.numTotalCount = 0;
+		$scope.numPageSize = 50;
+		$scope.numPagerPageSize = 10;
+		$scope.numCurrentPage = 0;
+
+		$scope.changePage = function (idx) {
+			$scope.numCurrentPage = idx;
+			angular.element('#demo-qi-1')[0].getInstance().getResult(idx * $scope.numPageSize, $scope.numPageSize, function(m) {
+				$scope.$apply(function() {
+					$scope.modelTable = m.body.result;
+				});
+			});
+		}
 
 		$scope.numPid = 123;
 
@@ -63,14 +78,16 @@
 
 		$scope.onTail = function(helper) {
 			console.log('onTail', helper)
-			helper.getResult(function(m) {
-				console.log(m);
+			$scope.numTotalCount = helper.message.body.total_count;
+			// helper.getResult(function(m) {
+			// 	console.log(m);
 
-				if($scope.optionResultCursor === 'tail') {
-					$scope.modelTable = m.body.result;
-					$scope.$apply();
-				}
-			});
+			// 	if($scope.optionResultCursor === 'tail') {
+			// 		$scope.modelTable = m.body.result;
+			// 		$scope.$apply();
+			// 	}
+			// });
+$scope.$apply();
 		}
 
 		$scope.optionResultCursor = 'head';

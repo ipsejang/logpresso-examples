@@ -20,7 +20,15 @@
 			{{optionResultCursor}}
 		</div>
 
-		<table table-view ng-model="modelTable" class="table table-bordered table-condensed">
-		</table>
+		<!-- <table table-view ng-model="modelTable" class="table table-bordered table-condensed">
+		</table> -->
+
+		<table-view-with-pager
+			ng-model="modelTable"
+			ng-total-count="numTotalCount"
+			ng-items-per-page="numPageSize"
+			ng-page-size="numPagerPageSize"
+			on-page-change="changePage($idx)">
+		</table-view-with-pager>
 	</div>
 </div>
