@@ -1,0 +1,23 @@
+{
+	"id": "dashboard-asset-tutorial",
+	"display_names": {
+		"ko": "Logpresso Dashboard Asset Tutorial"
+	},
+	"version": "1.0",
+	"description": "Logpresso Dashboard Asset Tutorial",
+	"manifest_version": 0.1,
+	"feature": {
+		"dashboard-assets": [
+			{
+				"id": "chart",
+				"display_names": {
+					"ko": "차트",
+					"en": "Chart"
+				},
+				"script": ["app.js"],
+				"property": "property.html",
+				"widget": "widget.html"
+			}
+		]
+	}
+}
