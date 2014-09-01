@@ -1,5 +1,4 @@
 (function() {
-	console.log('extension grid init ')
 
 	function DashboardAssetChartController($scope, socket) {
 		
@@ -80,7 +79,6 @@
 			$scope.setName = function(series) {
 				series.name = series.key;
 			}
-
 		});
 	}
 
