@@ -29,7 +29,7 @@
 			$scope.output = {
 				rules: [{
 					boundary: 0,
-					operator: '<',
+					operator: '>',
 					color: color_map[0]
 				}],
 				default_color: '#eeeeee',

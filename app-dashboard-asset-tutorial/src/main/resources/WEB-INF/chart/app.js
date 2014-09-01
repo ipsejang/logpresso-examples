@@ -26,6 +26,14 @@
 					valid = false;
 				}
 
+				if(!val.autoSeries) {
+					if(val.series.some(function(s) {
+						return !s.key || !s.name
+					})) {
+						valid = false;
+					}
+				}
+
 				return valid;
 			});
 
@@ -41,6 +49,7 @@
 			});
 
 			$scope.output = {
+				type: '',
 				autoSeries: false,
 				excludeSeries: [],
 				series: [
@@ -61,9 +70,7 @@
 			});
 
 			$scope.addExcludeSeries = function() {
-				$scope.output.excludeSeries.push({
-					color: '#ffcc00'
-				});
+				$scope.output.excludeSeries.push('');
 			}
 
 			$scope.addSeries = function() {
@@ -78,6 +85,13 @@
 
 			$scope.setName = function(series) {
 				series.name = series.key;
+			}
+
+			$scope.changeType = function() {
+				if($scope.output.type == 'pie') {
+					$scope.output.autoSeries = false;
+					$scope.output.series.splice(1, $scope.output.series.length);
+				}
 			}
 		});
 	}
