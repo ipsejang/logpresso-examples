@@ -9,36 +9,6 @@
 	"feature": {
 		"dashboard-assets": [
 			{
-				"id": "chart",
-				"display_names": {
-					"ko": "차트",
-					"en": "Chart"
-				},
-				"script": ["app.js"],
-				"property": "property.html",
-				"widget": "widget.html"
-			},
-			{
-				"id": "grid",
-				"display_names": {
-					"ko": "그리드",
-					"end": "Grid"
-				},
-				"script": ["app.js"],
-				"property": "property.html",
-				"widget": "widget.html"
-			},
-			{
-				"id": "wordcloud",
-				"display_names": {
-					"ko": "단어 구름",
-					"end": "Word Cloud"
-				},
-				"script": ["app.js"],
-				"property": "property.html",
-				"widget": "widget.html"
-			},
-			{
 				"id": "alertbox",
 				"display_names": {
 					"ko": "경고 상자",
