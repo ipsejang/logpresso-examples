@@ -9,10 +9,10 @@
 	"feature": {
 		"dashboard-assets": [
 			{
-				"id": "alertbox",
+				"id": "contentsbox",
 				"display_names": {
-					"ko": "경고 상자",
-					"end": "Alert Box"
+					"ko": "위젯 예제",
+					"end": "Example Widget"
 				},
 				"script": ["app.js"],
 				"property": "property.html",
