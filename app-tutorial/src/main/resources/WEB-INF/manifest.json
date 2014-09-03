@@ -31,6 +31,22 @@
 				},
 				"script": ["app.js"],
 				"html": "index.html"
+			},
+			{
+				"id": "service-provider",
+				"display_names": {
+					"ko": "Service Provider Demo"
+				},
+				"script": ["app.js"],
+				"html": "index.html"
+			},
+			{
+				"id": "service-runner",
+				"display_names": {
+					"ko": "Service Runner Demo"
+				},
+				"script": ["app.js"],
+				"html": "index.html"
 			}
 		]
 	}

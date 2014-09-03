@@ -1,0 +1,15 @@
+<form name="formAssetContentsBox" novalidate context-container ng-controller="DashboardAssetContentsBoxPropertyController" ng-model="output">
+	<label ng-class="{'error': formAssetContentsBox.column.$invalid && isOnSubmit }">
+		<span>내용을 보여줄 컬럼</span>
+		<select ng-model="output.column" name="column" ng-options="c.key as c.key for c in columnInfo" required>
+			<option value="">-- 선택하세요 --</option>
+		</select>
+		<div class="alert alert-error" ng-show="formAssetContentsBox.column.$invalid && isOnSubmit">
+			반드시 하나의 항목을 선택해야 합니다.
+		</div>
+	</label>
+	<label>
+		<span>내용을 보여줄 열</span>
+		<input type="number" ng-model="output.row" min="1" max="100"> 번째 줄
+	</label>
+</form>

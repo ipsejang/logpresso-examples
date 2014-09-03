@@ -130,6 +130,7 @@
 		<module>custom-syntax-tutorial</module>
 		<module>logger-tutorial</module>
 		<module>app-tutorial</module>
+		<module>app-dashboard-asset-tutorial</module>
 		<module>script-tutorial</module>
 		<module>jdbc-tutorial</module>
 	</modules>
