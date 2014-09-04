@@ -9,6 +9,7 @@
 		<version>1.0.0</version>
 	</parent>
 	<artifactId>parser-tutorial</artifactId>
+	<version>1.1.0</version>
 	<packaging>bundle</packaging>
 	<name>Parser Tutorial</name>
 	<build>
@@ -57,7 +58,7 @@
 		<dependency>
 			<groupId>org.araqne</groupId>
 			<artifactId>araqne-log-api</artifactId>
-			<version>2.5.1</version>
+			<version>3.2.12</version>
 		</dependency>
 	</dependencies>
 </project>

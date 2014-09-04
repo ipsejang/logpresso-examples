@@ -18,9 +18,9 @@ package com.logpresso.example.parser;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.araqne.log.api.LogParser;
+import org.araqne.log.api.V1LogParser;
 
-public class LoadAvgParser implements LogParser {
+public class LoadAvgParser extends V1LogParser {
 
 	private String[] names = new String[] { "avg_1m", "avg_5m", "avg_15m", "running_threads", "scheduled_threads", "next_pid" };
 
