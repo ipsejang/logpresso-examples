@@ -1,9 +1,8 @@
 package com.logpresso.example.app;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.felix.ipojo.annotations.Component;
@@ -14,19 +13,15 @@ import org.apache.felix.ipojo.annotations.Validate;
 import org.araqne.httpd.BundleResourceServlet;
 import org.araqne.httpd.HttpContext;
 import org.araqne.httpd.HttpService;
+import org.araqne.webconsole.AppManifest;
+import org.araqne.webconsole.AppProgram;
 import org.araqne.webconsole.AppProvider;
 import org.araqne.webconsole.AppRegistry;
-import org.json.JSONConverter;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 @Component(name = "demo-app-provider")
 @Provides
 public class DemoAppProvider implements AppProvider {
-	private static final String MANIFEST = "/WEB-INF/manifest.json";
-
 	@Requires
 	private AppRegistry appRegistry;
 
@@ -35,22 +30,12 @@ public class DemoAppProvider implements AppProvider {
 
 	private BundleContext bc;
 
-	private String appId;
-	private Map<String, Object> manifest;
-
 	public DemoAppProvider(BundleContext bc) {
 		this.bc = bc;
 	}
 
-	@Override
-	public String getId() {
-		String id = (String) manifest.get("id");
-		return id;
-	}
-
 	@Validate
 	public void start() {
-		loadManifest();
 		loadServlet();
 		appRegistry.register(this);
 	}
@@ -63,44 +48,58 @@ public class DemoAppProvider implements AppProvider {
 		unloadServlet();
 	}
 
-	private void loadManifest() {
-		InputStream is = null;
-		try {
-			is = DemoAppProvider.class.getResourceAsStream(MANIFEST);
-			JSONTokener tokenizer = new JSONTokener(new InputStreamReader(is, Charset.forName("utf-8")));
-			JSONObject json = (JSONObject) tokenizer.nextValue();
+	@Override
+	public AppManifest getManifest() {
+		AppManifest m = new AppManifest();
+		m.setId("app-tutorial");
+		m.setVersion("1.0");
+		m.setDisplayNames(t("App Tutorial"));
+		m.setDescriptions(t("Logpresso App Tutorial"));
 
-			this.manifest = JSONConverter.parse(json);
-			this.appId = (String) manifest.get("id");
+		AppProgram logdbDemo = new AppProgram();
+		logdbDemo.setId("logdb");
+		logdbDemo.setDisplayNames(t("App LogDB Demo"));
+		logdbDemo.setScriptFiles(Arrays.asList("app.js"));
+		logdbDemo.setHtmlFile("index.html");
 
-		} catch (Throwable t) {
-			throw new IllegalStateException("cannot load demo app manifest", t);
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-				}
-			}
-		}
+		AppProgram crudDemo = new AppProgram();
+		crudDemo.setId("crud");
+		crudDemo.setDisplayNames(t("App CRUD Demo"));
+		crudDemo.setScriptFiles(Arrays.asList("app.js"));
+		crudDemo.setHtmlFile("index.html");
+
+		AppProgram consoleDemo = new AppProgram();
+		consoleDemo.setId("devconsole");
+		consoleDemo.setDisplayNames(t("Developer Console"));
+		consoleDemo.setScriptFiles(Arrays.asList("app.js"));
+		consoleDemo.setHtmlFile("index.html");
+
+		m.getPrograms().add(logdbDemo);
+		m.getPrograms().add(crudDemo);
+		m.getPrograms().add(consoleDemo);
+
+		return m;
+	}
+
+	private Map<Locale, String> t(String text) {
+		Map<Locale, String> m = new HashMap<Locale, String>();
+		m.put(Locale.ENGLISH, text);
+		m.put(Locale.KOREAN, text);
+		return m;
 	}
 
 	private void loadServlet() {
 		HttpContext ctx = httpd.ensureContext("webconsole");
-		Bundle bundle = bc.getBundle();
-		ctx.addServlet(appId, new BundleResourceServlet(bundle, "/WEB-INF"), "/apps/" + appId + "/*");
+		String appId = getManifest().getId();
+		ctx.addServlet(appId, new BundleResourceServlet(bc.getBundle(), "/WEB-INF"), "/apps/" + appId + "/*");
 	}
 
 	private void unloadServlet() {
 		if (httpd != null) {
 			HttpContext ctx = httpd.ensureContext("webconsole");
+			String appId = getManifest().getId();
 			ctx.removeServlet(appId);
 		}
-	}
-
-	@Override
-	public Map<String, Object> getManifest() {
-		return manifest;
 	}
 
 }
