@@ -1,4 +1,4 @@
-package com.logpresso.example.app;
+package com.logpresso.example.dashboard;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,15 +13,16 @@ import org.apache.felix.ipojo.annotations.Validate;
 import org.araqne.httpd.BundleResourceServlet;
 import org.araqne.httpd.HttpContext;
 import org.araqne.httpd.HttpService;
+import org.araqne.webconsole.AppDashboardAsset;
 import org.araqne.webconsole.AppManifest;
 import org.araqne.webconsole.AppProgram;
 import org.araqne.webconsole.AppProvider;
 import org.araqne.webconsole.AppRegistry;
 import org.osgi.framework.BundleContext;
 
-@Component(name = "demo-app-provider")
+@Component(name = "demo-asset-provider")
 @Provides
-public class DemoAppProvider implements AppProvider {
+public class DemoAssetProvider implements AppProvider {
 	@Requires
 	private AppRegistry appRegistry;
 
@@ -30,7 +31,7 @@ public class DemoAppProvider implements AppProvider {
 
 	private BundleContext bc;
 
-	public DemoAppProvider(BundleContext bc) {
+	public DemoAssetProvider(BundleContext bc) {
 		this.bc = bc;
 	}
 
@@ -51,47 +52,19 @@ public class DemoAppProvider implements AppProvider {
 	@Override
 	public AppManifest getManifest() {
 		AppManifest m = new AppManifest();
-		m.setId("app-tutorial");
+		m.setId("dashboard-asset-tutorial");
 		m.setVersion("1.0");
-		m.setDisplayNames(t("App Tutorial"));
-		m.setDescriptions(t("Logpresso App Tutorial"));
-
-		AppProgram logdbDemo = new AppProgram();
-		logdbDemo.setId("logdb");
-		logdbDemo.setDisplayNames(t("App LogDB Demo"));
-		logdbDemo.setScriptFiles(Arrays.asList("app.js"));
-		logdbDemo.setHtmlFile("index.html");
-
-		AppProgram crudDemo = new AppProgram();
-		crudDemo.setId("crud");
-		crudDemo.setDisplayNames(t("App CRUD Demo"));
-		crudDemo.setScriptFiles(Arrays.asList("app.js"));
-		crudDemo.setHtmlFile("index.html");
-
-		AppProgram consoleDemo = new AppProgram();
-		consoleDemo.setId("devconsole");
-		consoleDemo.setDisplayNames(t("Developer Console"));
-		consoleDemo.setScriptFiles(Arrays.asList("app.js"));
-		consoleDemo.setHtmlFile("index.html");
+		m.setDisplayNames(t("Logpresso Dashboard Asset Tutorial"));
+		m.setDescriptions(t("Logpresso Dashboard Asset Tutorial"));
 		
-		AppProgram serviceProviderDemo = new AppProgram();
-		serviceProviderDemo.setId("service-provider");
-		serviceProviderDemo.setDisplayNames(t("Service Provider Demo"));
-		serviceProviderDemo.setScriptFiles(Arrays.asList("app.js"));
-		serviceProviderDemo.setHtmlFile("index.html");
+		AppDashboardAsset contentboxAsset = new AppDashboardAsset();
+		contentboxAsset.setId("contentsbox");
+		contentboxAsset.setDisplayNames(t("Example Widget"));
+		contentboxAsset.setScriptFiles(Arrays.asList("app.js"));
+		contentboxAsset.setPropertyFile("property.html");
+
+		m.getDashboardAssets().add(contentboxAsset);
 		
-		AppProgram serviceRunnerDemo = new AppProgram();
-		serviceRunnerDemo.setId("service-runner");
-		serviceRunnerDemo.setDisplayNames(t("Service Runner Demo"));
-		serviceRunnerDemo.setScriptFiles(Arrays.asList("app.js"));
-		serviceRunnerDemo.setHtmlFile("index.html");
-
-		m.getPrograms().add(logdbDemo);
-		m.getPrograms().add(crudDemo);
-		m.getPrograms().add(consoleDemo);
-		m.getPrograms().add(serviceProviderDemo);
-		m.getPrograms().add(serviceRunnerDemo);
-
 		return m;
 	}
 

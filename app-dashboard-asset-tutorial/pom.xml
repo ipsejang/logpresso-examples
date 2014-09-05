@@ -32,9 +32,9 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>com.logpresso.example.dashboard.asset</Bundle-SymbolicName>
+						<Bundle-SymbolicName>com.logpresso.example.dashboard</Bundle-SymbolicName>
 						<Export-Package>
-							com.logpresso.example.dashboard.asset;version=${project.version}
+							com.logpresso.example.dashboard;version=${project.version}
 						</Export-Package>
 						<Import-Package>*</Import-Package>
 					</instructions>
@@ -70,12 +70,7 @@
 		<dependency>
 			<groupId>org.araqne</groupId>
 			<artifactId>araqne-webconsole</artifactId>
-			<version>3.2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.logpresso</groupId>
-			<artifactId>logpresso-jdbc</artifactId>
-			<version>0.4.3</version>
+			<version>3.2.15</version>
 		</dependency>
 	</dependencies>
 </project>
