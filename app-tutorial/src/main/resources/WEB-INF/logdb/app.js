@@ -8,7 +8,7 @@
 		console.clear();
 		console.log(instance);
 
-		var q = instance.query('table logpresso_query_logs', 100)
+		var q = instance.query('table sys_query_logs', 100)
 
 		console.log(q);
 
