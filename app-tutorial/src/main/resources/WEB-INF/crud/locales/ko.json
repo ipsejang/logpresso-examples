@@ -1,0 +1,10 @@
+{
+	"$K_CRUD": {
+		"$S_Title": "Get/Insert/Delete 예제",
+		"$S_Name": "이름",
+		"$S_Comments": "내용",
+		"$S_Submit": "전송",
+		"$S_ErrorTitle": "오류",
+		"$S_Close": "닫기"
+	}
+}

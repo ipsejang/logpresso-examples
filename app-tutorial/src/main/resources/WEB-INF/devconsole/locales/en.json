@@ -1,0 +1,13 @@
+{
+	"$K_DEVCONSOLE": {
+		"$S_Title": "Developer Console",
+		"$S_MessageBus": "MessageBus",
+		"$S_Options": "Options",
+		"$S_Run": "Run",
+		"$S_Clear": "Clear",
+		"$S_Success": "Success",
+		"$S_Failed": "Failed",
+		"$S_MessageBusRequiredError": "MessageBus is required.",
+		"$S_OptionsInvalidError": "Invalid options. Options must be JSONized."
+	}
+}

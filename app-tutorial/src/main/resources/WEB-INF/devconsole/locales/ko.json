@@ -1,0 +1,13 @@
+{
+	"$K_DEVCONSOLE": {
+		"$S_Title": "개발자 콘솔",
+		"$S_MessageBus": "메시지버스",
+		"$S_Options": "옵션",
+		"$S_Run": "실행",
+		"$S_Clear": "재설정",
+		"$S_Success": "성공",
+		"$S_Failed": "실패",
+		"$S_MessageBusRequiredError": "메시지버스가 필요합니다.",
+		"$S_OptionsInvalidError": "유효하지 않은 옵션입니다. 옵션은 JSON 형식이어야 합니다."
+	}
+}

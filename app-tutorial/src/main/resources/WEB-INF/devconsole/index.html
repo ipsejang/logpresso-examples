@@ -1,22 +1,24 @@
-<div class="devconsole-container" ng-controller="DevConsoleController">
-	<div>
-		<h5>msgbus</h5>
-		<textarea ng-model="modelMsgbus" style="width:90%"></textarea>
-	</div>
-	<div>
-		<h5>options</h5>
-		<textarea ng-model="modelOption" style="width:90%"></textarea>
-	</div>
-	<button ng-click="run();">run</button>
-	<button ng-click="clear()">clear</button>
+<link rel="stylesheet" type="text/css" href="apps/app-tutorial/devconsole/style.css">
+<div class="devconsole-container container" ng-controller="DevConsoleController">
+	<legend>{{'$K_DEVCONSOLE.$S_Title' | translate}}</legend>
+	<form name="frm" novalidate>
+		<div class="control-group" ng-class="{'error': frm.msgbus.$invalid && isOnSubmit}">
+			<h5>{{'$K_DEVCONSOLE.$S_MessageBus' | translate}}</h5>
+			<input type="text" ng-model="modelMsgbus" name="msgbus" class="span8" required autofocus>
+			<span class="help-block" ng-show="frm.msgbus.$invalid && isOnSubmit">{{'$K_DEVCONSOLE.$S_MessageBusRequiredError' | translate}}</span>
+		</div>
+		<div class="control-group" ng-class="{'error': frm.options.$invalid && isOnSubmit}">
+			<h5>{{'$K_DEVCONSOLE.$S_Options' | translate}}</h5>
+			<textarea ng-model="modelOption" name="options" class="span12" ng-keydown="keyevent($event)"></textarea>
+			<span class="help-block" ng-show="frm.options.$invalid && isOnSubmit">{{'$K_DEVCONSOLE.$S_OptionsInvalidError' | translate}}</span>
+		</div>
+		<button type="submit" class="btn btn-primary" ng-click="run()">{{'$K_DEVCONSOLE.$S_Run' | translate}}</button>
+		<button class="btn" ng-click="clear()">{{'$K_DEVCONSOLE.$S_Clear' | translate}}</button>
+	</form>
 
-	<h5>success</h5>
-	<div class="well">
-		<pre>{{resultSuccess | json}}</pre>
-	</div>
+	<h5>{{'$K_DEVCONSOLE.$S_Success' | translate}}</h5>
+	<pre>{{resultSuccess | json}}</pre>
 
-	<h5>failed</h5>
-	<div class="well">
-		<pre>{{resultFailed | json}}</pre>
-	</div>
+	<h5>{{'$K_DEVCONSOLE.$S_Failed' | translate}}</h5>
+	<pre>{{resultFailed | json}}</pre>
 </div>

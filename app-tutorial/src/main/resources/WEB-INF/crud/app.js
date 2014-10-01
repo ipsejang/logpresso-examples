@@ -1,20 +1,23 @@
-	(function() {
-	var pid = 12344321;
+(function() {
+	var pid = LOGPRESSO.process.getPid();
 
-	function msgbusFail(m, raw) {
-		console.log(m)
-	}
+	function SampleCRUDController($scope, $filter, socket, $element) {
 
-	function SampleCRUDController($scope, $filter, socket, $translate) {
+		$scope.errorMessage = '';
 		$scope.dataSource = [];
 		$scope.insertData = {};
-		
+
+		function msgbusFail(m, raw) {
+			$element.find('.mdlError')[0].showDialog();
+			$scope.errorMessage = raw;
+			$scope.$apply();
+		}
+
 		$scope.getServices = function() {
 			$scope.dataSource = [];
 			socket.send('com.logpresso.example.app.DemoAppPlugin.getServices', {}, pid)
 			.success(function(m) {
 				var services = m.body.services;
-					
 				services.forEach(function(obj) {
 					$scope.dataSource.push(obj);
 				});
@@ -30,7 +33,7 @@
 			.success(function(m) {
 				$scope.$apply(function() {
 					data.id = m.body.id;
-					$scope.dataSource.splice(0, 0, data);	
+					$scope.dataSource.splice(0, 0, data);
 				});
 			})
 			.failed(msgbusFail);
@@ -45,14 +48,12 @@
 				$scope.$apply(function() {
 					$scope.dataSource.splice(idx, 1);
 				});
-				
 			})
 			.failed(msgbusFail);
 		}
 
 		$scope.getServices();
 	}
-
 
 	extension.global.addController(SampleCRUDController);
 })();

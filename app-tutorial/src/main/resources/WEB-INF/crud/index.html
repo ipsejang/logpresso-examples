@@ -1,18 +1,26 @@
-<div class="sample-crud-container" ng-controller="SampleCRUDController">
-	<form class="well">
+<link rel="stylesheet" type="text/css" href="apps/app-tutorial/crud/style.css">
+<div class="sample-crud-container container" ng-controller="SampleCRUDController">
+	<legend>{{'$K_CRUD.$S_Title' | translate}}</legend>
+	<form name="frm" novalidate>
 		<div class="form-inline">
-			CODE: <input type="text" ng-model="insertData.code" required/>
-			NAME: <input type="text" ng-model="insertData.name" required/>
-			<button ng-click="insertNew()" class="btn btn-primary">insert</button>
+			<label>
+				{{'$K_CRUD.$S_Name' | translate}}
+				<input type="text" ng-model="insertData.code" required/>
+			</label>
+			<label>
+				{{'$K_CRUD.$S_Comments' | translate}}
+				<input type="text" ng-model="insertData.name" required/>
+			</label>
+			<button ng-click="insertNew()" class="btn btn-primary" ng-disabled="frm.$invalid">{{'$K_CRUD.$S_Submit' | translate}}</button>
 		</div>
 	</form>
 
-	<table class="table table-bordered table-striped">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th>ID</th>
-				<th>CODE</th>
-				<th>NAME</th>
+				<th>{{'$K_CRUD.$S_Name' | translate}}</th>
+				<th>{{'$K_CRUD.$S_Comments' | translate}}</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -21,10 +29,19 @@
 				<td>{{data.id}}</td>
 				<td>{{data.code}}</td>
 				<td>{{data.name}}</td>
-				<td>
-					<button class="btn btn-danger btn-mini" ng-click="$parent.removeServices(data)">&times;</button>
+				<td class="padding1">
+					<button class="btn btn-small pull-right" ng-click="$parent.removeServices(data)">
+						<i class="icon-trash"></i>
+					</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+
+	<div class="mdlError modal" modal>
+		<a class="modal-close close">&times;</a>
+		<legend>{{'$K_CRUD.$S_ErrorTitle' | translate}}</legend>
+		<pre>{{errorMessage | json}}</pre>
+		<button class="btn pull-right modal-close">{{'$K_CRUD.$S_Close' | translate}}</button>
+	</div>
 </div>

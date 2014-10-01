@@ -1,0 +1,10 @@
+{
+	"$K_CRUD": {
+		"$S_Title": "Get/Insert/Delete Example",
+		"$S_Name": "Name",
+		"$S_Comments": "Comments",
+		"$S_Submit": "Submit",
+		"$S_ErrorTitle": "Error",
+		"$S_Close": "Close"
+	}
+}

@@ -1,0 +1,10 @@
+.sample-crud-container {
+  margin: 20px auto;
+}
+.sample-crud-container .form-inline label {
+  margin-right: 15px;
+}
+.sample-crud-container .padding1 {
+  padding: 5px 8px;
+  width: 40px;
+}
