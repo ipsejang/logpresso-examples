@@ -1,3 +1,11 @@
+// # 개발자 콘솔 예제
+
+// 이 로그프레소 앱은 메시지버스를 이용하는 방법을 보여줍니다.
+
+// 로그프레소 메시지버스란, 로그프레소 코어가 웹콘솔 등과 통신하는 채널을 말하는 것으로 WebSocket 기술을 사용하며, UI에서는 로그프레소에 내장되어 있는 WebSocket 서버와 통신할 수 있도록 만들어져 있습니다.
+
+// ### 앱의 시작
+// 앱은 괄호로 닫혀진 [즉시 실행하는 anonymous function](http://markdalgleish.com/2011/03/self-executing-anonymous-functions/) 의 형태로 만들어져야 합니다.
 (function() {
 	var pid = LOGPRESSO.process.getPid();
 

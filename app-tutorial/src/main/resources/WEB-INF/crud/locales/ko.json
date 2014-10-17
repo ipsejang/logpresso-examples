@@ -1,6 +1,6 @@
 {
 	"$K_CRUD": {
-		"$S_Title": "Get/Insert/Delete 예제",
+		"$S_Title": "Create/Read/Delete 예제",
 		"$S_Name": "이름",
 		"$S_Comments": "내용",
 		"$S_Submit": "전송",
