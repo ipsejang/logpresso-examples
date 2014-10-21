@@ -6,6 +6,8 @@
 		ng-page-size="numPageSize"
 		ng-pid="numPid"
 		on-head="onHead($helper)"
+		on-status-change="onStatusChange($msg)"
+		on-tail="onTail($helper)"
 		on-failed="onFailed($raw, $type, $note)">
 	</query-input>
 

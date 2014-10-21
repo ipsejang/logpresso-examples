@@ -32,6 +32,8 @@
 // 	ng-page-size="numPageSize"
 // 	ng-pid="numPid"
 // 	on-head="onHead($helper)"
+// 	on-status-change="onStatusChange($msg)"
+// 	on-tail="onTail($helper)"
 // 	on-failed="onFailed($raw, $type, $note)">
 // </query-input>
 // ```
@@ -95,26 +97,42 @@
 		$scope.numCurrentPage = 0;
 
 		// ### 쿼리 이벤트에 따른 결과 출력
-		// `on-head` 이벤트 핸들러는, 쿼리 후 검색된 결과가 페이지 사이즈에 도달했을 때, 이 예제에서는 처음 20개의 결과를 조회할 수 있을 때 발생하는 이벤트입니다.
+		// #### onHead 이벤트
+		// `onHead` 이벤트는, 쿼리 후 검색된 결과가 페이지 사이즈에 도달했을 때, 이 예제에서는 처음 20개의 결과를 조회할 수 있을 때 발생하는 이벤트입니다.
 
 		// 그러나 즉시 결과를 받아올 수 있는 것은 아니며, `$helper`를 통해 넘겨진 헬퍼에 담긴 `getResult` 메소드를 통해 결과를 받아올 수 있습니다.
 		$scope.onHead = function(helper) {
 			// `getResult(callback)` 메소드는 callback 을 파라미터로 넘기며, 이 callback 함수의 첫번째 인자에 결과가 담겨져서 넘어옵니다.
-			helper.getResult(function(m) {
+			helper.getResult(function(message) {
 
-				// 결과를 받아서 모델에 assign 합니다.
-				$scope.queryResult = m.body.result;
+				// 결과를 받아서 모델에 할당합니다.
+				$scope.queryResult = message.body.result;
 				$scope.$apply();
 			});
 		}
 
+		// #### onStatusChange 이벤트
+		// `onStatusChange` 이벤트는, 쿼리 후 상태가 변경되었을 때 발생하는 이벤트입니다. 대체로 많은 양의 테이블을 쿼리할 경우, 검색된 결과 갯수가 업데이트 되는 것을 확인할 수 있습니다.
+		$scope.onStatusChange = function(message) {
+			$scope.numTotalCount = message.body.count;
+			$scope.$apply();
+		}
+
+		// #### onTail 이벤트
+		// `onTail` 이벤트는, 쿼리가 완료되었을 때 발생하는 이벤트입니다. 헬퍼에 담긴 메시지 원본을 보면 `total_count`라는 이름으로 전체 쿼리 결과 갯수가 담겨져 오는 것을 확인 할 수 있습니다.
+		$scope.onTail = function(helper) {
+			$scope.numTotalCount = helper.message.body.total_count;
+			$scope.$apply();
+		}
+		// > 참고로 `onHead`와 마찬가지로 헬퍼의 `getResult(callback)` 메소드를 이용해 마지막 20개의 결과를 조회할 수 있습니다.
+
 		// ### 페이지 변경 이벤트
 		// `on-page-change`이벤트에 `$idx`라고 인덱스를 넘겨주면, 변경된 인덱스(쪽수)를 알아낼 수 있습니다.
 		$scope.changePage = function (idx) {
-			// 현재 페이지를 할당합니다.
+			// 일단 현재 페이지를 할당합니다.
 			$scope.numCurrentPage = idx;
 
-			// 쿼리 인스턴스를 반환하고, 인스턴스에 내장된 `getResult` 함수를 이용해 원하는 구간의 쿼리 결과를 바인딩 합니다.
+			// 원하는 구간의 쿼리 결과를 얻기 위해서는, 우선 쿼리 인스턴스를 얻어와서, 인스턴스에 내장된 `getResult` 함수를 이용합니다.
 
 			// 이 과정에서는 두가지 주목할 점이 있는데, 첫번째는 UI 컨트롤로부터 인스턴스를 얻어오는 과정이며, 두번째로는 `getResult(offset, limit, callback)`함수를 사용하는 과정입니다. 다음은 이러한 과정에 대한 자세한 설명입니다.
 
@@ -126,8 +144,8 @@
 
 			// * 쿼리 인스턴스의 `getResult(offset, limit, callback)` 함수를 이용합니다.
 			// 얻어오고자 하는 값은 [쪽수] * [한페이지에 보여질 row 갯수] 로부터 [row 갯수]만큼입니다. 순서대로 파라미터로 넘겨줍니다.
-			instance.getResult(idx * $scope.numPageSize, $scope.numPageSize, function(m) {
-				$scope.modelTable = m.body.result;
+			instance.getResult(idx * $scope.numPageSize, $scope.numPageSize, function(message) {
+				$scope.queryResult = message.body.result;
 				$scope.$apply()
 			});
 
