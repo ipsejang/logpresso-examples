@@ -1,34 +1,19 @@
-<div class="sample-logdb-container" ng-controller="SampleLogdbController">
-	<div ng-controller="SampleLogdbServiceController">
-	</div>
+<div class="well" style="margin:20px; box-sizing:border-box" ng-controller="SampleLogdbDirectiveController">
+	<query-input
+		id="demo-qi-1"
+		ng-model="queryResult"
+		ng-query-string="queryString"
+		ng-page-size="numPageSize"
+		ng-pid="numPid"
+		on-head="onHead($helper)"
+		on-failed="onFailed($raw, $type, $note)">
+	</query-input>
 
-	<div class="well" style="margin:20px; box-sizing:border-box" ng-controller="SampleLogdbDirectiveController">
-		<query-input
-			id="demo-qi-1"
-			ng-model="queryResult"
-			ng-query-string="queryString"
-			ng-page-size="numPageSize"
-			ng-pid="numPid"
-			on-head="onHead($helper)"
-			on-tail="onTail($helper)">
-		</query-input>
-
-		<div>
-			<label><input type="radio" ng-model="optionResultCursor" value="head"> 처음</label>
-			<label><input type="radio" ng-model="optionResultCursor" value="tail"> 마지막</label>
-			<input type="number" ng-model="numPageSize" max="500" min="1"/> 건의 결과
-			{{optionResultCursor}}
-		</div>
-
-		<!-- <table table-view ng-model="modelTable" class="table table-bordered table-condensed">
-		</table> -->
-
-		<table-view-with-pager
-			ng-model="modelTable"
-			ng-total-count="numTotalCount"
-			ng-items-per-page="numPageSize"
-			ng-page-size="numPagerPageSize"
-			on-page-change="changePage($idx)">
-		</table-view-with-pager>
-	</div>
+	<table-view-with-pager
+		ng-model="queryResult"
+		ng-total-count="numTotalCount"
+		ng-items-per-page="numPageSize"
+		ng-page-size="numPagerPageSize"
+		on-page-change="changePage($idx)">
+	</table-view-with-pager>
 </div>
