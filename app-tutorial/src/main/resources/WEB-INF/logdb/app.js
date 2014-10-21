@@ -77,7 +77,13 @@
 	var pid = LOGPRESSO.process.getPid();
 
 	// ### 메인 컨트롤러 작성
-	function SampleLogdbDirectiveController($scope, socket, serviceLogdb) {
+	// `SampleLogdbDirectiveController`는 이 앱의 메인 컨트롤러 이름입니다. angular.js의 컨트롤러의 형태로 작성되어져야 하며, 기본적으로 `$scope`를 주입해야 합니다.
+
+	// 또한 로그DB 및 쿼리와 관련된 서비스를 이용하려면 `serviceLogdb`라는 로그프레소 내장 서비스를 주입합니다.
+
+	// `eventSender`는 컨트롤러간의 메소드 전달을 위한 일종의 창구입니다. 이에 대한 자세한 설명은 문서를 참조하십시오.
+	// 여기에서는 앱의 종료 이벤트를 등록하기 위한 목적으로 주입했습니다.
+	function SampleLogdbDirectiveController($scope, serviceLogdb, eventSender) {
 
 		// ### 모델 정의
 
@@ -161,6 +167,17 @@
 		$scope.onFailed = function(raw, type, note) {
 			alert(raw[0].errorCode);
 		}
+
+		// ### 앱 종료시 쿼리 삭제
+		// 위에서도 설명했듯, 쿼리 결과를 담고있는 인스턴스의 사용이 끝나면 반드시 삭제해줘야 합니다.
+		// 이를 위해서 앱의 종료시의 이벤트를 등록해줍니다.
+
+		// `eventSender[programID].$event.on(eventType, eventHandler)` 의 형태로 관련 이벤트를 등록해줄 수 있습니다.
+		// 여기에는 이 프로그램의 아이디인 'logdb', 그리고 종료시의 이벤트를 지칭하는 'unload' 이벤트를 등록합니다.
+		eventSender['logdb'].$event.on('unload', function() {
+			var instance = angular.element('#demo-qi-1')[0].getInstance();
+			serviceLogdb.remove(instance);
+		});
 	}
 
 	// ### 메인 컨트롤러 등록
