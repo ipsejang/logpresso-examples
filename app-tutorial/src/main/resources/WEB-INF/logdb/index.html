@@ -1,21 +1,25 @@
-<div class="well" style="margin:20px; box-sizing:border-box" ng-controller="SampleLogdbDirectiveController">
-	<query-input
-		id="demo-qi-1"
-		ng-model="queryResult"
-		ng-query-string="queryString"
-		ng-page-size="numPageSize"
-		ng-pid="numPid"
-		on-head="onHead($helper)"
-		on-status-change="onStatusChange($msg)"
-		on-tail="onTail($helper)"
-		on-failed="onFailed($raw, $type, $note)">
-	</query-input>
+<div style="margin:20px; box-sizing:border-box" ng-controller="SampleLogdbDirectiveController">
+	<legend>{{'$K_LOGDB.$S_Title' | translate}}</legend>
+	<div class="alert alert-info">{{'$K_LOGDB.$S_Description' | translate}}</div>
 
-	<table-view-with-pager
-		ng-model="queryResult"
-		ng-total-count="numTotalCount"
-		ng-items-per-page="numPageSize"
-		ng-page-size="numPagerPageSize"
-		on-page-change="changePage($idx)">
-	</table-view-with-pager>
+	<div class="well" style="margin:0">
+		{{'$K_LOGDB.$S_SelectTable' | translate}}
+		<select ng-model="selectedTable" ng-options="table for table in dataTables | orderBy:'toString()'" style="margin:0"></select>
+		<button ng-disabled="isNowLoading" class="btn btn-primary" ng-click="query()">{{'$K_LOGDB.$S_Query' | translate}}</button>
+		<button ng-show="isNowLoading" class="btn btn-warning" ng-click="stop()">{{'$K_LOGDB.$S_Stop' | translate}}</button>
+		<span ng-show="isNowLoading">
+			<img src="images/ajax-loader-small.gif">
+			{{'$K_LOGDB.$S_Loading' | translate}}
+		</span>
+	</div>
+
+	<div style="border: 1px solid #ccc">
+		<table-view-with-pager
+			ng-model="dataResult"
+			ng-total-count="numTotalCount"
+			ng-items-per-page="numPageSize"
+			ng-page-size="numPagerPageSize"
+			on-page-change="changePage($idx)">
+		</table-view-with-pager>
+	</div>
 </div>

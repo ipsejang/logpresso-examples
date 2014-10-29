@@ -1,0 +1,10 @@
+{
+	"$K_LOGDB": {
+		"$S_Title": "쿼리 결과 페이징 예제",
+		"$S_Description": "테이블을 선택하여 결과를 조회합니다.",
+		"$S_SelectTable": "테이블 선택",
+		"$S_Query": "조회",
+		"$S_Stop": "중지",
+		"$S_Loading": "로딩 중..."
+	}
+}
