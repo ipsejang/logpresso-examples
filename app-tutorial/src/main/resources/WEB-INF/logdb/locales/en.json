@@ -1,0 +1,10 @@
+{
+	"$K_LOGDB": {
+		"$S_Title": "Query Result Paging Example",
+		"$S_Description": "Select table and get result.",
+		"$S_SelectTable": "Select Table...",
+		"$S_Query": "Query",
+		"$S_Stop": "Stop",
+		"$S_Loading": "Loading..."
+	}
+}
