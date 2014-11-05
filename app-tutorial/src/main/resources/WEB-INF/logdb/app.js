@@ -1,3 +1,7 @@
+var angular = parent.angular;
+var $ = parent.$;
+var LOGPRESSO = parent.LOGPRESSO;
+
 // # 쿼리 결과 페이징 예제
 
 // 이 앱은 테이블에 적재된 로그를 조회하는 코드입니다. 내부적으로 쿼리를 하고 그 결과를 조회합니다. 특히, 그 결과를 일정 단위로 끊어서 페이징 할 수 있도록 제작되었습니다.
@@ -60,7 +64,15 @@
 	// 여기에서는 앱의 종료 이벤트를 등록하기 위한 목적으로 주입했습니다.
 
 	// `$element`는 `ng-controller`를 통해 컨트롤러를 등록한 엘리먼트를 반환합니다. 이는 추후에 `<table-view-with-pager>`의 내장 메소드를 사용하기 위해 필요합니다.
-	function SampleLogdbDirectiveController($scope, $element, serviceLogdb, socket, eventSender) {
+	function SampleLogdbDirectiveController($scope, $element, serviceLogdb, socket, eventSender, serviceTranslate, $translate) {
+
+		$translate('$S_str_Cancel').then(function (translation) {
+			console.log('-------------', translation)
+		})
+		.catch(function(a,b,c) {
+			console.log(a,b,c)
+		})
+
 
 		// ### 모델 정의
 
@@ -106,7 +118,10 @@
 
 				// `$scope.$apply()`를 불러서, view와의 바인딩을 업데이트합니다.
 				$scope.$apply();
-			});
+			})
+			.failed(function(m, raw) {
+				console.log(m, raw)
+			})
 		}
 
 		// 컨트롤러의 시작과 동시에 테이블 목록을 조회합니다.
@@ -215,12 +230,20 @@
 
 		// `eventSender[programID].$event.on(eventType, eventHandler)` 의 형태로 관련 이벤트를 등록해줄 수 있습니다.
 		// 여기에는 이 프로그램의 아이디인 'logdb', 그리고 종료시의 이벤트를 지칭하는 'unload' 이벤트를 등록합니다.
+		/*
 		eventSender['logdb'].$event.on('unload', function() {
 			serviceLogdb.remove(instance);
 		});
+*/
 	}
 
 	// ### 메인 컨트롤러 등록
 	// 컨트롤러를 등록해서 로그프레소가 이 앱의 컨트롤러를 인식할 수 있도록 합니다.
-	extension.global.addController(SampleLogdbDirectiveController);
+	// extension.global.addController(SampleLogdbDirectiveController);
+
+	var app = angular.module('app', [])
+	app.controller('SampleLogdbDirectiveController', SampleLogdbDirectiveController);
+
+	angular.bootstrap(document, parent.common);
+
 })();
