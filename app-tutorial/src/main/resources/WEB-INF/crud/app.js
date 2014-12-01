@@ -112,5 +112,5 @@
 
 	// ### 메인 컨트롤러 등록
 	// 컨트롤러를 등록해서 로그프레소가 이 앱의 컨트롤러를 인식할 수 있도록 합니다.
-	extension.global.addController(SampleCRUDController);
+	app.register.controller('SampleCRUDController', SampleCRUDController);
 })();

@@ -8,7 +8,7 @@
 		<button ng-disabled="isNowLoading" class="btn btn-primary" ng-click="query()">{{'$K_LOGDB.$S_Query' | translate}}</button>
 		<button ng-show="isNowLoading" class="btn btn-warning" ng-click="stop()">{{'$K_LOGDB.$S_Stop' | translate}}</button>
 		<span ng-show="isNowLoading">
-			<img src="images/ajax-loader-small.gif">
+			<img src="/images/ajax-loader-small.gif">
 			{{'$K_LOGDB.$S_Loading' | translate}}
 		</span>
 	</div>
@@ -23,3 +23,4 @@
 		</table-view-with-pager>
 	</div>
 </div>
+<script src="app.js"></script>
