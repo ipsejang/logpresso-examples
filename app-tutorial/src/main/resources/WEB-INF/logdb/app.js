@@ -1,7 +1,3 @@
-var angular = parent.angular;
-var $ = parent.$;
-var LOGPRESSO = parent.LOGPRESSO;
-
 // # 쿼리 결과 페이징 예제
 
 // 이 앱은 테이블에 적재된 로그를 조회하는 코드입니다. 내부적으로 쿼리를 하고 그 결과를 조회합니다. 특히, 그 결과를 일정 단위로 끊어서 페이징 할 수 있도록 제작되었습니다.
@@ -77,7 +73,7 @@ var LOGPRESSO = parent.LOGPRESSO;
 		// ### 모델 정의
 
 		// `<table-view-with-pager>`에서 쓰이는 모델들입니다.
-		$scope.numPageSize = 20;		
+		$scope.numPageSize = 20;
 		$scope.numTotalCount = 0;
 		$scope.numPagerPageSize = 10;
 
@@ -136,7 +132,7 @@ var LOGPRESSO = parent.LOGPRESSO;
 			if(angular.isDefined(instance)) {
 				serviceLogdb.remove(instance);
 			}
-			
+
 			$scope.dataResult = [];
 			$scope.isNowLoading = true;
 
@@ -152,7 +148,7 @@ var LOGPRESSO = parent.LOGPRESSO;
 			.onHead(onHead)
 			.onStatusChange(onStatusChange)
 			.onTail(onTail)
-			
+
 		}
 
 		// ### 쿼리 이벤트에 따른 결과 출력
@@ -239,11 +235,5 @@ var LOGPRESSO = parent.LOGPRESSO;
 
 	// ### 메인 컨트롤러 등록
 	// 컨트롤러를 등록해서 로그프레소가 이 앱의 컨트롤러를 인식할 수 있도록 합니다.
-	// extension.global.addController(SampleLogdbDirectiveController);
-
-	var app = angular.module('app', [])
-	app.controller('SampleLogdbDirectiveController', SampleLogdbDirectiveController);
-
-	angular.bootstrap(document, parent.common);
-
+	app.register.controller('SampleLogdbDirectiveController', SampleLogdbDirectiveController);
 })();

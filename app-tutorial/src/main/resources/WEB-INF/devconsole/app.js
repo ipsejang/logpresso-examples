@@ -66,5 +66,5 @@
 		}
 	}
 
-	extension.global.addController(DevConsoleController);
+	app.register.controller('DevConsoleController', DevConsoleController);
 })();

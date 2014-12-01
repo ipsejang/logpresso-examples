@@ -1,0 +1,114 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}</style>
+	<style>
+		input, textarea {
+			box-sizing: content-box;
+		}
+	</style>
+	<link href="/lib/bootstrap2/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+	<link rel="stylesheet" href="/css/toggle-switch.css" />
+	<link rel="stylesheet" href="/css/angular-ui-tree.min.css" />
+	<link rel="stylesheet" href="/css/angular-toggle-switch.css" />
+	<link rel="stylesheet" href="/css/angular-toggle-switch-bootstrap.css" />
+
+	<link rel="stylesheet" type="text/css" href="/lib/jquery/jquery.resizableColumns.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/jquery/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/jquery/jquery-ui-timepicker-addon.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/bootstrap-timepicker/bootstrap-timepicker.css" />
+
+	<link href="/script/layoutEngine/layoutEngine.css" rel="stylesheet" media="screen">
+
+	<link rel="stylesheet" type="text/css" href="/css/app.css">
+	<link rel="stylesheet" type="text/css" href="/css/ui-cronizer.css" />
+
+	<link href="/css/dashboard.css" rel="stylesheet" media="screen">
+	<link href="/css/widget.css" rel="stylesheet" media="screen">
+	<link href="/css/table-view-resizable.css" rel="stylesheet" media="screen">
+
+	<link rel="stylesheet" type="text/css" href="/lib/jquery/jquery-ui.css" />
+	<link rel="stylesheet" type="text/css" href="/lib/jquery/jquery-ui-timepicker-addon.css" />
+
+	<script src="/lib/jquery/jquery-2.1.1.js"></script>
+	<script src="/lib/jquery/jquery.ui.core.js"></script>
+	<script src="/lib/jquery/jquery.ui.widget.js"></script>
+	<script src="/lib/jquery/jquery.ui.mouse.js"></script>
+	<script src="/lib/jquery/jquery.ui.sortable.js"></script>
+	<script src="/lib/jquery/jquery.ui.draggable.js"></script>
+	<script src="/lib/jquery/jquery.ui.droppable.js"></script>
+	<script src="/lib/jquery/jquery.ui.resizable.js"></script>
+	<script src="/lib/jquery/jquery.ui.datepicker.js"></script>
+	<script src="/lib/jquery/jquery-ui-timepicker-addon.js"></script>
+	<script src="/lib/jquery/jquery.ui.slider.js"></script>
+	<script src="/lib/zclip/jquery.zclip.min.js"></script>
+
+	<script src="/lib/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+	<script src="/lib/bootstrap-timepicker/bootstrap-timepicker.js"></script>
+
+	<script src="/lib/bootstrap2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div ng-controller="AppContainerController">
+	<div id="app-container"></div>
+</div>
+
+<script>
+window.angular = parent.angular;
+window.LOGPRESSO = parent.LOGPRESSO;
+window.d3 = parent.d3;
+window.Async = parent.Async;
+window.app = angular.module('app', ['ngRoute', 'ui.router', 'pascalprecht.translate']);
+window.notify = parent.notify;
+app.controller('AppContainerController', function AppContainerController($scope, serviceAuth, $element, $translatePartialLoader, $compile, $timeout, USER_LEVELS) {
+	$translatePartialLoader.addPart('/locales');
+
+	$scope.isAuthorized = serviceAuth.isAuthorized;
+	$scope.userRoles = USER_LEVELS;
+
+	serviceAuth.addEventListener('load', function() {
+		$('#app-container').load(path, function() {
+			$compile($element.find('*[ng-controller]:first'))($scope);
+			$scope.$apply();
+		});
+	});
+});
+
+app.config(function($controllerProvider, $compileProvider, $filterProvider, $provide, $translateProvider) {
+
+	app.register = {
+		controller: $controllerProvider.register,
+		directive: $compileProvider.directive,
+		filter: $filterProvider.register,
+		factory: $provide.factory,
+		service: $provide.service
+	}
+
+	$translateProvider.useLoader('$translatePartialLoader', {
+		urlTemplate: '{part}/{lang}.json'
+	});
+
+	$translateProvider.preferredLanguage(parent.$lang).fallbackLanguage('en');
+});
+
+app.run(function($rootScope, $translate, $translatePartialLoader, serviceAuth) {
+	$translate.use(parent.$lang);
+	$translate.refresh();
+
+	$rootScope.$on('$translatePartialLoaderStructureChanged', function () {
+		$translate.refresh();
+	});
+});
+
+</script>
+<script src="config.js"></script>
+<script>
+var path = decodeURIComponent(location.search.substr(3));
+angular.bootstrap(document, parent.common);
+
+</script>
+</body>
+</html>
