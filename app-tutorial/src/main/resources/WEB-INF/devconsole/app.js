@@ -43,6 +43,7 @@
 				console.log(m);
 				$scope.$apply(function() {
 					$scope.isOnSubmit = false;
+					$scope.resultFailed = undefined;
 					$scope.resultSuccess = m.body;
 				});
 			})
@@ -52,6 +53,7 @@
 				$scope.$apply(function() {
 					$scope.isOnSubmit = false;
 					$scope.resultFailed = raw;
+					$scope.resultSuccess = undefined;
 				});
 			})
 		}
