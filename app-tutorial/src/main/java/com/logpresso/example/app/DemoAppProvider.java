@@ -89,8 +89,6 @@ public class DemoAppProvider implements AppProvider {
 		m.getPrograms().add(logdbDemo);
 		m.getPrograms().add(crudDemo);
 		m.getPrograms().add(consoleDemo);
-//		m.getPrograms().add(serviceProviderDemo);
-//		m.getPrograms().add(serviceRunnerDemo);
 
 		return m;
 	}

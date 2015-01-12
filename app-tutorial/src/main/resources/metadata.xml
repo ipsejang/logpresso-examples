@@ -3,5 +3,6 @@
 	xmlns="org.apache.felix.ipojo">
 	<instance component="demo-app-plugin" />
 	<instance component="demo-app-provider" />
+	<instance component="demo-app-script-factory" />
 </ipojo>
 
