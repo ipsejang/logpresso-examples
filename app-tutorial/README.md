@@ -137,26 +137,26 @@ app.config(function($stateProvider, $urlRouterProvider, serviceUtility) {
 
 	$stateProvider
 	.state('', { // 첫 페이지
-		url: simpleTemplate.replace('{path}', path),
+		url: serviceUtility.simpleTemplate('{path}', path),
 		views: {
 			'': {
-				templateUrl: replace('{absPath}/{idxPage}', absPath)
+				templateUrl: serviceUtility.simpleTemplate('{absPath}/{idxPage}', absPath)
 			}
 		}
 	})
 	.state('users', { // 사용자 목록 페이지
-		url: simpleTemplate.replace('{path}/users/', path),
+		url: serviceUtility.simpleTemplate('{path}/users/', path),
 		views: {
 			'': {
-				templateUrl: replace('{absPath}/users/{idxPage}', absPath)
+				templateUrl: serviceUtility.simpleTemplate('{absPath}/users/{idxPage}', absPath)
 			}
 		}
 	})
 	.state('users.id', { // 특정 사용자 페이지
-		url: simpleTemplate.replace('{path}/users/:id', path),
+		url: serviceUtility.simpleTemplate('{path}/users/:id', path),
 		views: {
 			'': {
-				templateUrl: replace('{absPath}/users/{idxPage}', absPath)
+				templateUrl: serviceUtility.simpleTemplate('{absPath}/users/{idxPage}', absPath)
 			}
 		}
 	});
