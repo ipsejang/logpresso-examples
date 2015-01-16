@@ -63,3 +63,102 @@
 	- 앱의 URL 라우팅 정보 및 로케일 정보를 정의하는 설정 파일입니다.
 - index.html
 	- 실질적으로 앱의 UI를 표시하는 마크업입니다. 이 안에 `script`태그를 이용해 UI 로직을 추가적으로 로딩할 수 있습니다.
+
+### 앱 라우팅 정보 설정 방법
+
+##### 개요
+앱 내에 다음과 같은 디렉토리 구조가 있다고 가정해봅시다.
+
+- src/main/resources
+	- WEB-INF
+		- program_id
+			- locales
+				- en.json
+				- ko.json
+			- users
+				- users.js
+				- index.html
+			- app.html
+			- app.js
+			- config.js
+			- index.html
+
+앱 내 메뉴 구성이 다음과 같을 때, URL 라우팅을 따로 정의 할 수 있습니다.
+다음은 각 URL에 따른 샘플 화면 예제입니다.
+
+##### 1. 첫 페이지
+http://logpresso/#/app_id/program_id
+```
+
+	[ -> 첫 페이지 ] [ 사용자 목록 ]
+	--------------------------
+		여기는 첫 페이지입니다.
+
+```
+
+##### 2. 사용자 목록 페이지
+http://logpresso/#/app_id/program_id/users
+```
+
+	[ 첫 페이지 ] [ -> 사용자 목록 ]
+	--------------------------
+		사용자 목록
+		- mindori
+		- babo
+		- xeraph
+
+
+```
+
+##### 3. 특정 사용자 페이지
+http://logpresso/#/app_id/program_id/users/mindori
+
+```
+
+	[ 첫 페이지 ] [ -> 사용자 목록 ]
+	------------------------------
+		사용자 목록 - mindori
+		mindori 님의 페이지입니다.
+
+````
+
+##### 라우팅 설정
+위와 같은 화면 구성에 따른 라우팅 설정을 하면 다음과 같습니다.
+
+```javascript
+app.config(function($stateProvider, $urlRouterProvider, serviceUtility) {
+
+	var path = { path: '^/app_id/program_id' };
+	var absPath = {
+		absPath: '/apps/app_id/program_id',
+		idxPage: 'index.html'
+	};
+
+
+	$stateProvider
+	.state('', { // 첫 페이지
+		url: simpleTemplate.replace('{path}', path),
+		views: {
+			'': {
+				templateUrl: replace('{absPath}/{idxPage}', absPath)
+			}
+		}
+	})
+	.state('users', { // 사용자 목록 페이지
+		url: simpleTemplate.replace('{path}/users/', path),
+		views: {
+			'': {
+				templateUrl: replace('{absPath}/users/{idxPage}', absPath)
+			}
+		}
+	})
+	.state('users.id', { // 특정 사용자 페이지
+		url: simpleTemplate.replace('{path}/users/:id', path),
+		views: {
+			'': {
+				templateUrl: replace('{absPath}/users/{idxPage}', absPath)
+			}
+		}
+	});
+});
+```
