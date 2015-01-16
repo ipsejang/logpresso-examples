@@ -28,19 +28,39 @@ public class DemoAppInstaller {
 		ProgramProfile admin = programApi.getProgramProfile("localhost", "admin");
 		ProgramProfile member = programApi.getProgramProfile("localhost", "member");
 
-		Program program = new Program();
-		program.setPack("app-tutorial");
-		program.setName("devconsole");
-		Map<String, String> displayNames = new HashMap<String, String>();
-		displayNames.put("en", "Developer Console");
-		displayNames.put("ko", "개발자 콘솔");
-		program.setDisplayNames(displayNames);
+		Program consoleDemo = new Program();
+		consoleDemo.setPack("app-tutorial");
+		consoleDemo.setName("devconsole");
+		Map<String, String> consoleDisplayNames = new HashMap<String, String>();
+		consoleDisplayNames.put("en", "Developer Console");
+		consoleDisplayNames.put("ko", "개발자 콘솔");
+		consoleDemo.setDisplayNames(consoleDisplayNames);
+		
+		Program logdbDemo = new Program();
+		logdbDemo.setPack("app-tutorial");
+		logdbDemo.setName("logdb");
+		Map<String, String> logdbDisplayNames = new HashMap<String, String>();
+		logdbDisplayNames.put("en", "App LogDB Demo");
+		logdbDisplayNames.put("ko", "앱 로그DB 예제");
+		logdbDemo.setDisplayNames(logdbDisplayNames);
+		
+		Program crudDemo = new Program();
+		crudDemo.setPack("app-tutorial");
+		crudDemo.setName("crud");
+		Map<String, String> crudDisplayNames = new HashMap<String, String>();
+		crudDisplayNames.put("en", "App CRUD Demo");
+		crudDisplayNames.put("ko", "앱 CRUD 예제");
+		crudDemo.setDisplayNames(crudDisplayNames);
 
-		programApi.createProgram("localhost", program);
+		programApi.createProgram("localhost", consoleDemo);
+		programApi.createProgram("localhost", logdbDemo);
+		programApi.createProgram("localhost", crudDemo);
 
-		all.getPrograms().add(program);
-		admin.getPrograms().add(program);
-		member.getPrograms().add(program);
+		all.getPrograms().add(consoleDemo);
+		all.getPrograms().add(logdbDemo);
+		all.getPrograms().add(crudDemo);
+		admin.getPrograms().add(consoleDemo);
+		member.getPrograms().add(consoleDemo);
 
 		programApi.updateProgramProfile("localhost", all);
 		programApi.updateProgramProfile("localhost", admin);

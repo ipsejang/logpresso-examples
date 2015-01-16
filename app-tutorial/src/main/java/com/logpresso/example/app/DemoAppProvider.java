@@ -74,18 +74,6 @@ public class DemoAppProvider implements AppProvider {
 		consoleDemo.setScriptFiles(Arrays.asList("app.js"));
 		consoleDemo.setHtmlFile("index.html");
 		
-		AppProgram serviceProviderDemo = new AppProgram();
-		serviceProviderDemo.setId("service-provider");
-		serviceProviderDemo.setDisplayNames(t("Service Provider Demo"));
-		serviceProviderDemo.setScriptFiles(Arrays.asList("app.js"));
-		serviceProviderDemo.setHtmlFile("index.html");
-		
-		AppProgram serviceRunnerDemo = new AppProgram();
-		serviceRunnerDemo.setId("service-runner");
-		serviceRunnerDemo.setDisplayNames(t("Service Runner Demo"));
-		serviceRunnerDemo.setScriptFiles(Arrays.asList("app.js"));
-		serviceRunnerDemo.setHtmlFile("index.html");
-
 		m.getPrograms().add(logdbDemo);
 		m.getPrograms().add(crudDemo);
 		m.getPrograms().add(consoleDemo);
