@@ -64,6 +64,8 @@
 - index.html
 	- 실질적으로 앱의 UI를 표시하는 마크업입니다. 이 안에 `script`태그를 이용해 UI 로직을 추가적으로 로딩할 수 있습니다.
 
+이 repository에 포함되어있는 실질적인 코드에 대한 설명은 clone을 받은 후에 `app-tutorial/src/main/resources/WEB-INF/docs/groc/index.html` 를 브라우저에서 열어보면 확인할 수 있습니다.
+
 ### 앱 라우팅 정보 설정 방법
 
 ##### 개요
