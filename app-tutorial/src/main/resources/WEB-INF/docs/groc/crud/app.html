@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><title>crud/app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="crud/app"><meta name="groc-project-path" content="crud/app.js"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">crud/app.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="createreaddelete-">Create/Read/Delete 예제</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이 로그프레소 앱은 생성(Create)/읽기(Read)/삭제(Delete) 예제를 보여주는 앱입니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이 예제 앱을 통해 앱에서 많이 쓰이는 패턴인 생성/읽기/삭제 과정을 UI 상에서 어떻게 구현할 수 있는지 알 수 있습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이 예제에서는 SQL로부터 하나의 열을 생성/읽기/삭제 할 수 있음을 보여줍니다. 실제 JDBC 프로파일을 이용해서 SQL과의 통신을 구현하는 부분은 Java 파일에서 찾을 수 있으며,
+실질적으로 생성/읽기/삭제 등은 메시지버스 명령을 이용하여 접근합니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>메시지버스 명령은 <code>socket</code> 서비스의 <code>send</code> 메소드를 통해 실행할 수 있으며, <code>DemoAppPlugin</code> 아래의 다양한 명령을 실행하는 것을 이 앱에서 확인할 수 있습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">사전 준비물</h3>
+<ul>
+<li>mariadb 혹은 호환 DB</li>
+<li>JDBC 프로파일<ul>
+<li>demo    jdbc:mysql://localhost:3306/app_tutorial    root    false</li>
+</ul>
+</li>
+<li>다음 쿼리를 실행하여 DB 스키마를 만듭니다.<pre><code>  dbquery ..</code></pre>
+</li>
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">앱의 시작</h3>
+<p>앱은 괄호로 닫혀진 <a href="http://markdalgleish.com/2011/03/self-executing-anonymous-functions/">즉시 실행하는 anonymous function</a> 의 형태로 만들어져야 합니다.</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">고유 아이디 부여</h3>
+<p>앱이 가지는 고유 아이디를 받아옵니다.</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">var</span> pid = LOGPRESSO.process.getPid();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">메인 컨트롤러 작성</h3>
+<p><code>SampleCRUDController</code>는 이 앱의 메인 컨트롤러 이름입니다. angular.js의 컨트롤러의 형태로 작성되어져야 하며, 기본적으로 <code>$scope</code>를 주입해야 합니다.
+또한 로그프레소 메시지버스를 이용하려면 <code>socket</code>이라는 내장 서비스를 주입해야 합니다.</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SampleCRUDController</span><span class="hljs-params">($scope, socket, $element)</span> {</span>
+
+		$scope.errorMessage = <span class="hljs-string">''</span>;
+		$scope.dataSource = [];
+		$scope.insertData = {};</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">목록 읽기</h3>
+<p>DB에 저장되어있는 목록을 불러옵니다.</p></div></div><div class="code"><div class="wrapper">		$scope.getServices = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$scope.dataSource = [];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>socket.send(command, options, pid)</code> 형태로 메시지버스를 호출하며, 성공 및 실패시의 행동을 Promise 형태로 등록합니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DemoAppPlugin의 getService 명령은 옵션은 필요로 하지 않으므로, 빈 객체 리터럴을 넘겨줍니다.</p></div></div><div class="code"><div class="wrapper">			socket.send(<span class="hljs-string">'com.logpresso.example.app.DemoAppPlugin.getServices'</span>, {}, pid)
+			.success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m)</span> {</span>
+				<span class="hljs-keyword">var</span> services = m.body.services;
+				services.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(obj)</span> {</span>
+					$scope.dataSource.push(obj);
+				});
+
+				$scope.$apply();
+			})
+			.failed(msgbusFail);
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">새로운 열 생성</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">		$scope.insertNew = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DemoAppPlugin의 insertService 명령을 통해 새 데이터를 삽입할 때는, HTML과의 Two-way 바인딩으로 만들어진 <code>$scope.insertData</code>를 복사해서 넘겨줍니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>
+    {{'$K_CRUD.$S_Name' | translate}}
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text"</span> <span class="hljs-attribute">ng-model</span>=<span class="hljs-value">"insertData.code"</span> <span class="hljs-attribute">required</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>
+    {{'$K_CRUD.$S_Comments' | translate}}
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text"</span> <span class="hljs-attribute">ng-model</span>=<span class="hljs-value">"insertData.name"</span> <span class="hljs-attribute">required</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span></code></pre>
+<p>바인딩하는 HTML 코드는 위와 같으며, <code>ng-model</code>을 통해 미루어볼 때, 옵션에 들어가는 데이터는 <code>{ &quot;code&quot;: &quot;some text&quot;, &quot;name&quot;: &quot;example text&quot; }</code> 와 같은 형태가 됨을 알 수 있습니다.</p></div></div><div class="code"><div class="wrapper">			<span class="hljs-keyword">var</span> data = angular.copy($scope.insertData);
+			socket.send(<span class="hljs-string">'com.logpresso.example.app.DemoAppPlugin.insertService'</span>, data, pid)
+			.success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m)</span> {</span>
+				$scope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+					data.id = m.body.id;
+					$scope.dataSource.splice(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, data);
+				});
+			})
+			.failed(msgbusFail);
+
+			$scope.insertData = {};
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">기존의 열 삭제</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">		$scope.removeServices = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(data)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>DemoAppPlugin의 deleteServices 명령을 통해 열을 삭제할 때는, 삭제하려는 대상 열의 id를 배열 형태로 넘겨주면 됩니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>UI에서는 단순히 하나의 열만 삭제 할 수 있게 구현되어 있으므로, <code>[data.id]</code> 와 같이 대상 id를 배열로 감싸줍니다.</p></div></div><div class="code"><div class="wrapper">			<span class="hljs-keyword">var</span> idx = $scope.dataSource.indexOf(data);
+			socket.send(<span class="hljs-string">'com.logpresso.example.app.DemoAppPlugin.deleteServices'</span>, {<span class="hljs-string">'services'</span>: [data.id]}, pid)
+			.success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m)</span> {</span>
+				$scope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+					$scope.dataSource.splice(idx, <span class="hljs-number">1</span>);
+				});
+			})
+			.failed(msgbusFail);
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">에러 처리</h3>
+<p>메시지버스 명령에 실패할 경우에 모달창을 띄워 에러를 표시합니다.</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">msgbusFail</span><span class="hljs-params">(m, raw)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>모달창을 띄우려면, <code>$element</code> 서비스를 이용해 모달창을 찾고, element에 내장되어있는 <code>showDialog()</code> 메소드를 실행합니다.</p></div></div><div class="code"><div class="wrapper">			$element.find(<span class="hljs-string">'.mdlError'</span>)[<span class="hljs-number">0</span>].showDialog();
+			$scope.errorMessage = raw;
+			$scope.$apply();
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">앱 초기화</h3>
+<p>컨트롤러가 활성화되는 시점에 앱이 필요로 하는 초기화 코드를 넣어줍니다.</p></div></div><div class="code"><div class="wrapper">		$scope.getServices();
+	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">메인 컨트롤러 등록</h3>
+<p>컨트롤러를 등록해서 로그프레소가 이 앱의 컨트롤러를 인식할 수 있도록 합니다.</p></div></div><div class="code"><div class="wrapper">	app.register.controller(<span class="hljs-string">'SampleCRUDController'</span>, SampleCRUDController);
+})();</div></div></div></div></body></html>

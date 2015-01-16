@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><title>logdb/app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="logdb/app"><meta name="groc-project-path" content="logdb/app.js"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">logdb/app.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="---">쿼리 결과 페이징 예제</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이 앱은 테이블에 적재된 로그를 조회하는 코드입니다. 내부적으로 쿼리를 하고 그 결과를 조회합니다. 특히, 그 결과를 일정 단위로 끊어서 페이징 할 수 있도록 제작되었습니다.
+이를 응용하여 쿼리 조건들을 조합하여 그 결과를 조회하는 식의 앱을 작성할 수 있습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>로그프레소는 쿼리 엔진을 통하여 로그스토리지에 적재된 로그들을 쿼리할 수 있습니다. 쿼리는 다음과 같은 과정으로 이루어집니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&lt;그림&gt; create, started, push 등등의 과정 설명</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>로그프레소가 제공하는 API를 이용하여 각각의 과정, 즉 이벤트 발생에 따른 이벤트 핸들러를 등록할 수 있습니다.
+이 과정에 대한 자세한 설명은 다음[]을 참조하십시오.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>앱에서 로그DB 서비스를 이용한 후에, 필히 고려해야 하는 것은 쿼리 결과의 사용이 끝나면 반드시 삭제해줘야 한다는 것입니다.
+그렇지 않다면 더이상 사용하지 않는 쿼리 결과가 메모리에 계속 남아있게 되어 성능에 지장을 줄 수 있습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이 소스를 통해 쿼리 및 쿼리 결과를 조회하는 방법에 대해 알수 있습니다. 또한 쿼리 및 쿼리 결과 조회에 도움을 주는 UI 컨트롤을 소개하고, 이를 이용하는 법을 알아봅니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="ui--">UI 컨트롤 소개</h3>
+<p>index.html 파일을 보면 <code>&lt;table-view-with-pager&gt;</code> 라는 directive 를 볼 수 있습니다.
+이는 로그프레소가 제공하는 UI 컨트롤의 일부로, 쿼리문을 입력해서 쿼리하고, 그 결과를 테이블 형태로 페이징해서 보여줄 수 있는 기능을 제공하고 있습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="lttable-view-with-pagergt-">&lt;table-view-with-pager&gt; 컨트롤</h4></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>&lt;table-view-with-pager&gt;</code>컨트롤은 단순히 테이블과 페이저를 합쳐놓은 컨트롤로, 배열로 된 결과물을 페이징해서 보여줄 수 있도록 제작된 컨트롤입니다. 여기에 이벤트 핸들러를 등록해 페이지가 변경될 때마다 표시될 모델을 변경하는 과정을 코딩합니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-title">table-view-with-pager
+</span>    <span class="hljs-attribute">ng-model</span>=<span class="hljs-value">"dataResult"</span>
+    <span class="hljs-attribute">ng-total-count</span>=<span class="hljs-value">"numTotalCount"</span>
+    <span class="hljs-attribute">ng-items-per-page</span>=<span class="hljs-value">"numPageSize"</span>
+    <span class="hljs-attribute">ng-page-size</span>=<span class="hljs-value">"numPagerPageSize"</span>
+    <span class="hljs-attribute">on-page-change</span>=<span class="hljs-value">"changePage($idx)"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-title">table-view-with-pager</span>&gt;</span></code></pre></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li><code>ng-model</code> 테이블에 표시할 (페이징된) 모델입니다.</li>
+<li><code>ng-total-count</code> 페이징해서 보여줄 전체 모델의 총 row의 갯수를 바인딩합니다.</li>
+<li><code>ng-items-per-page</code> 한 페이지에 몇개의 row를 표시할 지를 결정합니다.</li>
+<li><code>ng-page-size</code> 페이저 자체에 몇개의 인덱스를 표시할 지를 결정합니다.</li>
+<li><code>on-page-change</code> 페이지가 변경될 때마다 실행할 이벤트 핸들러입니다. <code>$idx</code>로 인덱스를 넘겨줄 수 있습니다.</li>
+</ul></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>내장 메소드로는, <code>reset()</code> 메소드가 있으며, 이는 페이저를 재설정하는 기능을 합니다. 이를 호출하는 방법은 이 앱의 코드와 같이 설명하겠습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>그밖의 속성 및 메소드들에 대한 자세한 설명은 API 문서를 참조하십시오.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이제 자바스크립트 코드를 통해 이러한 컨트롤을 어떻게 사용하는지 알아봅니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">앱의 시작</h3></div></div></div><div class="segment"><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">고유 아이디 부여</h3>
+<p>앱이 가지는 고유 아이디를 받아옵니다.</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-keyword">var</span> pid = LOGPRESSO.process.getPid();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">메인 컨트롤러 작성</h3>
+<p><code>SampleLogdbDirectiveController</code>는 이 앱의 메인 컨트롤러 이름입니다. angular.js의 컨트롤러의 형태로 작성되어져야 하며, 기본적으로 <code>$scope</code>를 주입해야 합니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>또한 로그DB 및 쿼리와 관련된 서비스를 이용하려면 <code>serviceLogdb</code>라는 로그프레소 내장 서비스를 주입합니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>eventSender</code>는 컨트롤러간의 메소드 전달을 위한 일종의 창구입니다. 이에 대한 자세한 설명은 문서를 참조하십시오.
+여기에서는 앱의 종료 이벤트를 등록하기 위한 목적으로 주입했습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>$element</code>는 <code>ng-controller</code>를 통해 컨트롤러를 등록한 엘리먼트를 반환합니다. 이는 추후에 <code>&lt;table-view-with-pager&gt;</code>의 내장 메소드를 사용하기 위해 필요합니다.</p></div></div><div class="code"><div class="wrapper">	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SampleLogdbDirectiveController</span><span class="hljs-params">($scope, $element, serviceLogdb, socket, eventSender, serviceTranslate, $translate)</span> {</span>
+
+		$translate(<span class="hljs-string">'$S_str_Cancel'</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(translation)</span> {</span>
+			console.log(<span class="hljs-string">'-------------'</span>, translation)
+		})
+		.catch(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(a,b,c)</span> {</span>
+			console.log(a,b,c)
+		})</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">모델 정의</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>&lt;table-view-with-pager&gt;</code>에서 쓰이는 모델들입니다.</p></div></div><div class="code"><div class="wrapper">		$scope.numPageSize = <span class="hljs-number">20</span>;
+		$scope.numTotalCount = <span class="hljs-number">0</span>;
+		$scope.numPagerPageSize = <span class="hljs-number">10</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>쿼리 결과를 담을 모델입니다.</p></div></div><div class="code"><div class="wrapper">		$scope.dataResult = [];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>현재 페이지입니다.</p></div></div><div class="code"><div class="wrapper">		$scope.numCurrentPage = <span class="hljs-number">0</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>테이블 목록을 담을 모델입니다.</p></div></div><div class="code"><div class="wrapper">		$scope.dataTables = [];</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>선택한 테이블을 담을 모델입니다.</p></div></div><div class="code"><div class="wrapper">		$scope.selectedTable;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>현재 상태가 로딩중인지 여부를 담는 모델입니다.</p></div></div><div class="code"><div class="wrapper">		$scope.isNowLoading = <span class="hljs-literal">false</span>;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>쿼리 인스턴스를 담을 변수입니다.</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-keyword">var</span> instance;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">테이블 목록 조회</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>특정 테이블의 로그를 조회하기 전에 먼저 테이블 목록을 먼저 불러옵니다. 테이블 목록은 메시지버스를 통해 얻어낼 수 있으며, 메시지버스를 이용하기 위해서 <code>socket</code>서비스를 이용합니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>테이블 목록을 조회할 함수입니다.</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTableList</span><span class="hljs-params">()</span> {</span>
+			socket.send(<span class="hljs-string">'org.araqne.logdb.msgbus.ManagementPlugin.listTables'</span>, {}, pid)
+			.success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>테이블 목록을 <code>dataTables</code>에 적재합니다.</p></div></div><div class="code"><div class="wrapper">				$scope.dataTables = <span class="hljs-built_in">Object</span>.keys(m.body.tables);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>테이블 목록 중 특정 테이블을 즉시 선택합니다.</p></div></div><div class="code"><div class="wrapper">				<span class="hljs-keyword">if</span>(!!$scope.dataTables.length) {
+					$scope.selectedTable = $scope.dataTables[<span class="hljs-number">0</span>];
+				}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>$scope.$apply()</code>를 불러서, view와의 바인딩을 업데이트합니다.</p></div></div><div class="code"><div class="wrapper">				$scope.$apply();
+			})
+			.failed(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m, raw)</span> {</span>
+				console.log(m, raw)
+			})
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>컨트롤러의 시작과 동시에 테이블 목록을 조회합니다.</p></div></div><div class="code"><div class="wrapper">		getTableList();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="---">로그 조회 이벤트 핸들러</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>UI 구성요소에서 <code>ng-click</code> 등과 같은 이벤트에 대한 이벤트 핸들러입니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>조회 함수입니다.</p></div></div><div class="code"><div class="wrapper">		$scope.query = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			<span class="hljs-keyword">if</span>(angular.isDefined(instance)) {
+				serviceLogdb.remove(instance);
+			}
+
+			$scope.dataResult = [];
+			$scope.isNowLoading = <span class="hljs-literal">true</span>;
+
+			$element.find(<span class="hljs-string">'table-view-with-pager'</span>)[<span class="hljs-number">0</span>].reset();</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="db--">로그DB 서비스 이용</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="--">쿼리 인스턴스 생성</h4></div></div></div><div class="segment"><div class="code"><div class="wrapper">			instance = serviceLogdb.create(pid);</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="---">쿼리 및 이벤트 할당</h4></div></div></div><div class="segment"><div class="code"><div class="wrapper">			instance.query(<span class="hljs-string">'table '</span> + $scope.selectedTable, $scope.numPageSize)
+			.onHead(onHead)
+			.onStatusChange(onStatusChange)
+			.onTail(onTail)
+
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="----">쿼리 이벤트에 따른 결과 출력</h3>
+<h4 id="onhead-">onHead 이벤트</h4>
+<p><code>onHead</code> 이벤트는, 쿼리 후 검색된 결과가 페이지 사이즈에 도달했을 때, 이 예제에서는 처음 20개의 결과를 조회할 수 있을 때 발생하는 이벤트입니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>그러나 즉시 결과를 받아올 수 있는 것은 아니며, <code>$helper</code>를 통해 넘겨진 헬퍼에 담긴 <code>getResult</code> 메소드를 통해 결과를 받아올 수 있습니다.</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onHead</span><span class="hljs-params">(helper)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>getResult(callback)</code> 메소드는 callback 을 파라미터로 넘기며, 이 callback 함수의 첫번째 인자에 결과가 담겨져서 넘어옵니다.</p></div></div><div class="code"><div class="wrapper">			helper.getResult(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>결과를 받아서 모델에 할당합니다.</p></div></div><div class="code"><div class="wrapper">				$scope.dataResult = message.body.result;
+				$scope.$apply();
+			});
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="onstatuschange-">onStatusChange 이벤트</h4>
+<p><code>onStatusChange</code> 이벤트는, 쿼리 후 상태가 변경되었을 때 발생하는 이벤트입니다. 대체로 많은 양의 테이블을 쿼리할 경우, 검색된 결과 갯수가 업데이트 되는 것을 확인할 수 있습니다.</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onStatusChange</span><span class="hljs-params">(message)</span> {</span>
+			$scope.numTotalCount = message.body.count;
+			$scope.$apply();
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="ontail-">onTail 이벤트</h4>
+<p><code>onTail</code> 이벤트는, 쿼리가 완료되었을 때 발생하는 이벤트입니다. 헬퍼에 담긴 메시지 원본을 보면 <code>total_count</code>라는 이름으로 전체 쿼리 결과 갯수가 담겨져 오는 것을 확인 할 수 있습니다.</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onTail</span><span class="hljs-params">(helper)</span> {</span>
+			$scope.numTotalCount = helper.message.body.total_count;
+			$scope.isNowLoading = <span class="hljs-literal">false</span>;
+			$scope.$apply();
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+<p>참고로 <code>onHead</code>와 마찬가지로 헬퍼의 <code>getResult(callback)</code> 메소드를 이용해 마지막 20개의 결과를 조회할 수 있습니다.</p>
+</blockquote></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">페이지 변경 이벤트</h3>
+<p><code>on-page-change</code>이벤트에 <code>$idx</code>라고 인덱스를 넘겨주면, 변경된 인덱스(쪽수)를 알아낼 수 있습니다.</p></div></div><div class="code"><div class="wrapper">		$scope.changePage = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(idx)</span> {</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>일단 현재 페이지를 할당합니다.</p></div></div><div class="code"><div class="wrapper">			$scope.numCurrentPage = idx;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>원하는 구간의 쿼리 결과를 얻기 위해서는, 우선 쿼리 인스턴스를 얻어와서, 인스턴스에 내장된 <code>getResult</code> 함수를 이용합니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이 과정에서는 두가지 주목할 점이 있는데, 첫번째는 UI 컨트롤로부터 인스턴스를 얻어오는 과정이며, 두번째로는 <code>getResult(offset, limit, callback)</code>함수를 사용하는 과정입니다. 다음은 이러한 과정에 대한 자세한 설명입니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><ul>
+<li>쿼리 인스턴스의 <code>getResult(offset, limit, callback)</code> 함수를 이용합니다.
+얻어오고자 하는 값은 [쪽수] * [한페이지에 보여질 row 갯수] 로부터 [row 갯수]만큼입니다. 순서대로 파라미터로 넘겨줍니다.</li>
+</ul></div></div><div class="code"><div class="wrapper">			instance.getResult(idx * $scope.numPageSize, $scope.numPageSize, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(message)</span> {</span>
+				$scope.dataResult = message.body.result;
+				$scope.$apply()
+			});</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+<p><strong>주의!</strong>
+이는 <code>onHead</code>, <code>onTail</code> 이벤트의 helper 에 딸린 <code>getResult(callback)</code> 메소드와는 넘기는 파라미터가 다릅니다.
+helper의 <code>getResult(callback)</code>는 컨트롤에 지정해준 대로 limit이 자동으로 지정되지만, 인스턴스의 <code>getResult(offset, limit, callback)</code>에는 offset, limit을 지정해야 합니다.</p>
+</blockquote></div></div><div class="code"><div class="wrapper">		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">에러 처리</h3>
+<p>잘못된 쿼리문을 입력할 경우 등에 대하여 에러를 표시할 필요가 있습니다.
+이는 <code>&lt;query-input&gt;</code>의 <code>on-failed</code> 이벤트를 이용해서 처리할 수 있습니다.
+<code>$raw</code>에 에러에 대한 전체 정보가 담겨져 있습니다.</p></div></div><div class="code"><div class="wrapper">		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">onFailed</span><span class="hljs-params">(raw, type, note)</span> {</span>
+			alert(raw[<span class="hljs-number">0</span>].errorCode);
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="---">쿼리 중지 이벤트 핸들러</h3>
+<p>쿼리 중지</p></div></div><div class="code"><div class="wrapper">		$scope.stop = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			instance.stop();
+			$scope.isNowLoading = <span class="hljs-literal">false</span>;
+		}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="---">앱 종료시 쿼리 삭제</h3>
+<p>위에서도 설명했듯, 쿼리 결과를 담고있는 인스턴스의 사용이 끝나면 반드시 삭제해줘야 합니다.
+이를 위해서 앱의 종료시의 이벤트를 등록해줍니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><code>eventSender[programID].$event.on(eventType, eventHandler)</code> 의 형태로 관련 이벤트를 등록해줄 수 있습니다.
+여기에는 이 프로그램의 아이디인 &#39;logdb&#39;, 그리고 종료시의 이벤트를 지칭하는 &#39;unload&#39; 이벤트를 등록합니다.
+eventSender[&#39;logdb&#39;].$event.on(&#39;unload&#39;, function() {
+    serviceLogdb.remove(instance);
+});</p></div></div><div class="code"><div class="wrapper">	}</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="--">메인 컨트롤러 등록</h3>
+<p>컨트롤러를 등록해서 로그프레소가 이 앱의 컨트롤러를 인식할 수 있도록 합니다.</p></div></div><div class="code"><div class="wrapper">	app.register.controller(<span class="hljs-string">'SampleLogdbDirectiveController'</span>, SampleLogdbDirectiveController);
+})();</div></div></div></div></body></html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><title>devconsole/app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="devconsole/app"><meta name="groc-project-path" content="devconsole/app.js"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">devconsole/app.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="--">개발자 콘솔 예제</h1></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>이 로그프레소 앱은 메시지버스를 이용하는 방법을 보여줍니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>로그프레소 메시지버스란, 로그프레소 코어가 웹콘솔 등과 통신하는 채널을 말하는 것으로 WebSocket 기술을 사용하며, UI에서는 로그프레소에 내장되어 있는 WebSocket 서버와 통신할 수 있도록 만들어져 있습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>메시지버스 명령은 <code>socket</code> 서비스의 <code>send</code> 메소드를 통해 실행할 수 있으며,
+이 앱에서는 로그프레소 CLI의 <code>msgbus.plugin</code> 명령을 통해 확인할 수 있는 다양한 메시지버스 명령을, UI에 준비된 입력 상자를 통해 실행할 수 있게끔 만들어져 있습니다.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-">앱의 시작</h3>
+<p>앱은 괄호로 닫혀진 <a href="http://markdalgleish.com/2011/03/self-executing-anonymous-functions/">즉시 실행하는 anonymous function</a> 의 형태로 만들어져야 합니다.</p></div></div><div class="code"><div class="wrapper">(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+	<span class="hljs-keyword">var</span> pid = LOGPRESSO.process.getPid();
+
+	<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">DevConsoleController</span><span class="hljs-params">($scope, socket)</span> {</span>
+		<span class="hljs-keyword">var</span> INIT_MSGBUS = <span class="hljs-string">'org.araqne.logdb.msgbus.ManagementPlugin.listTables'</span>;
+		<span class="hljs-keyword">var</span> INIT_OPTION = <span class="hljs-string">'{}'</span>;
+		$scope.modelMsgbus = INIT_MSGBUS;
+		$scope.modelOption = INIT_OPTION;
+		$scope.isOnSubmit = <span class="hljs-literal">false</span>;
+
+		$scope.keyevent = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(e)</span> {</span>
+			<span class="hljs-keyword">if</span> ((e.ctrlKey || e.shiftKey) &amp;&amp; e.keyCode === <span class="hljs-number">13</span>) {
+				e.preventDefault();
+				$scope.run();
+			}
+		}
+
+		$scope.run = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$scope.isOnSubmit = <span class="hljs-literal">true</span>;
+			<span class="hljs-keyword">var</span> option;
+			<span class="hljs-keyword">try</span> {
+				option = <span class="hljs-built_in">JSON</span>.parse($scope.modelOption);
+			}
+			<span class="hljs-keyword">catch</span>(e) {
+				$scope.frm.options.$invalid = <span class="hljs-literal">true</span>;
+				<span class="hljs-keyword">return</span>;
+			}
+
+			$scope.frm.options.$invalid = <span class="hljs-literal">false</span>;
+			socket.send($scope.modelMsgbus, option, pid)
+			.success(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m)</span> {</span>
+				console.log(m);
+				$scope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+					$scope.isOnSubmit = <span class="hljs-literal">false</span>;
+					$scope.resultFailed = <span class="hljs-literal">undefined</span>;
+					$scope.resultSuccess = m.body;
+				});
+			})
+			.failed(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(m, raw)</span> {</span>
+				console.log(m);
+				console.log(raw);
+				$scope.$apply(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+					$scope.isOnSubmit = <span class="hljs-literal">false</span>;
+					$scope.resultFailed = raw;
+					$scope.resultSuccess = <span class="hljs-literal">undefined</span>;
+				});
+			})
+		}
+
+		$scope.clear = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+			$scope.frm.$setPristine();
+			$scope.isOnSubmit = <span class="hljs-literal">false</span>;
+			$scope.modelMsgbus = INIT_MSGBUS;
+			$scope.modelOption = INIT_OPTION
+			$scope.resultSuccess = <span class="hljs-literal">undefined</span>;
+			$scope.resultFailed = <span class="hljs-literal">undefined</span>;
+		}
+	}
+
+	app.register.controller(<span class="hljs-string">'DevConsoleController'</span>, DevConsoleController);
+})();</div></div></div></div></body></html>
