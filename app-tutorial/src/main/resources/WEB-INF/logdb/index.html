@@ -19,7 +19,8 @@
 			ng-total-count="numTotalCount"
 			ng-items-per-page="numPageSize"
 			ng-page-size="numPagerPageSize"
-			on-page-change="changePage($idx)">
+			on-page-change="changePage($idx)"
+			field-order="{ enable: true, by: 'server', order: dataFields }">
 		</table-view-with-pager>
 	</div>
 </div>

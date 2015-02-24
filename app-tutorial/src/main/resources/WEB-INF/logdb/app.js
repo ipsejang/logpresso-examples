@@ -144,7 +144,8 @@
 			instance = serviceLogdb.create(pid);
 
 			// #### 쿼리 및 이벤트 할당
-			instance.query('table ' + $scope.selectedTable, $scope.numPageSize)
+			var query = 'table ' + $scope.selectedTable;
+			instance.query(query, $scope.numPageSize)
 			.onHead(onHead)
 			.onStatusChange(onStatusChange)
 			.onTail(onTail)
@@ -161,6 +162,8 @@
 			helper.getResult(function(message) {
 
 				// 결과를 받아서 모델에 할당합니다.
+				console.log(message)
+				$scope.dataFields = message.body.field_order;
 				$scope.dataResult = message.body.result;
 				$scope.$apply();
 			});
