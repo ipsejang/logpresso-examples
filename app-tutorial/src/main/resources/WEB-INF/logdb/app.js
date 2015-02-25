@@ -56,11 +56,8 @@
 
 	// 또한 로그DB 및 쿼리와 관련된 서비스를 이용하려면 `serviceLogdb`라는 로그프레소 내장 서비스를 주입합니다.
 
-	// `eventSender`는 컨트롤러간의 메소드 전달을 위한 일종의 창구입니다. 이에 대한 자세한 설명은 문서를 참조하십시오.
-	// 여기에서는 앱의 종료 이벤트를 등록하기 위한 목적으로 주입했습니다.
-
 	// `$element`는 `ng-controller`를 통해 컨트롤러를 등록한 엘리먼트를 반환합니다. 이는 추후에 `<table-view-with-pager>`의 내장 메소드를 사용하기 위해 필요합니다.
-	function SampleLogdbDirectiveController($scope, $element, serviceLogdb, socket, eventSender, serviceTranslate, $translate) {
+	function SampleLogdbDirectiveController($scope, $element, serviceLogdb, socket, serviceTranslate, $translate) {
 
 		$translate('$S_str_Cancel').then(function (translation) {
 			console.log('-------------', translation)
@@ -238,5 +235,5 @@
 
 	// ### 메인 컨트롤러 등록
 	// 컨트롤러를 등록해서 로그프레소가 이 앱의 컨트롤러를 인식할 수 있도록 합니다.
-	app.register.controller('SampleLogdbDirectiveController', SampleLogdbDirectiveController);
+	app.register.controller('SampleLogdbDirectiveController', ['$scope', '$element', 'serviceLogdb', 'socket', 'serviceTranslate', '$translate', SampleLogdbDirectiveController]);
 })();
