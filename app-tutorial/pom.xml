@@ -70,7 +70,7 @@
 		<dependency>
 			<groupId>org.araqne</groupId>
 			<artifactId>araqne-webconsole</artifactId>
-			<version>3.2.15</version>
+			<version>3.3.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.logpresso</groupId>
