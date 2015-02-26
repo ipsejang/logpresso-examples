@@ -114,3 +114,5 @@
 	// 컨트롤러를 등록해서 로그프레소가 이 앱의 컨트롤러를 인식할 수 있도록 합니다.
 	app.register.controller('SampleCRUDController', SampleCRUDController);
 })();
+
+//# sourceURL=apps/app-tutorial/crud/app.js

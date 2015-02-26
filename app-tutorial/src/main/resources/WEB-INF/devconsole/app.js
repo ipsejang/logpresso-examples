@@ -70,3 +70,5 @@
 
 	app.register.controller('DevConsoleController', DevConsoleController);
 })();
+
+//# sourceURL=apps/app-tutorial/devconsole/app.js

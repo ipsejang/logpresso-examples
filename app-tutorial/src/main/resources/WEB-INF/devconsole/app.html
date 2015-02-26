@@ -56,54 +56,7 @@
 	<div id="app-container"></div>
 </div>
 
-<script>
-window.angular = parent.angular;
-window.LOGPRESSO = parent.LOGPRESSO;
-window.d3 = parent.d3;
-window.Async = parent.Async;
-window.app = angular.module('app', ['ngRoute', 'ui.router', 'pascalprecht.translate']);
-window.notify = parent.notify;
-app.controller('AppContainerController', function AppContainerController($scope, serviceAuth, $element, $translatePartialLoader, $compile, $timeout, USER_LEVELS) {
-	$translatePartialLoader.addPart('/locales');
-
-	$scope.isAuthorized = serviceAuth.isAuthorized;
-	$scope.userRoles = USER_LEVELS;
-
-	serviceAuth.addEventListener('load', function() {
-		$('#app-container').load(path, function() {
-			$compile($element.find('*[ng-controller]:first'))($scope);
-			$scope.$apply();
-		});
-	});
-});
-
-app.config(function($controllerProvider, $compileProvider, $filterProvider, $provide, $translateProvider) {
-
-	app.register = {
-		controller: $controllerProvider.register,
-		directive: $compileProvider.directive,
-		filter: $filterProvider.register,
-		factory: $provide.factory,
-		service: $provide.service
-	}
-
-	$translateProvider.useLoader('$translatePartialLoader', {
-		urlTemplate: '{part}/{lang}.json'
-	});
-
-	$translateProvider.preferredLanguage(parent.$lang).fallbackLanguage('en');
-});
-
-app.run(function($rootScope, $translate, $translatePartialLoader, serviceAuth) {
-	$translate.use(parent.$lang);
-	$translate.refresh();
-
-	$rootScope.$on('$translatePartialLoaderStructureChanged', function () {
-		$translate.refresh();
-	});
-});
-
-</script>
+<script src="/script/app-initializer.js"></script>
 <script src="config.js"></script>
 <script>
 var path = decodeURIComponent(location.search.substr(3));
