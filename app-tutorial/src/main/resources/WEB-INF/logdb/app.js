@@ -47,9 +47,6 @@
 
 // ### 앱의 시작
 (function() {
-	// ### 고유 아이디 부여
-	// 앱이 가지는 고유 아이디를 받아옵니다.
-	var pid = LOGPRESSO.process.getPid();
 
 	// ### 메인 컨트롤러 작성
 	// `SampleLogdbDirectiveController`는 이 앱의 메인 컨트롤러 이름입니다. angular.js의 컨트롤러의 형태로 작성되어져야 하며, 기본적으로 `$scope`를 주입해야 합니다.
@@ -98,7 +95,7 @@
 
 		// 테이블 목록을 조회할 함수입니다.
 		function getTableList() {
-			socket.send('org.araqne.logdb.msgbus.ManagementPlugin.listTables', {}, pid)
+			socket.send('org.araqne.logdb.msgbus.ManagementPlugin.listTables', {}, PID)
 			.success(function(m) {
 
 				// 테이블 목록을 `dataTables`에 적재합니다.
@@ -138,7 +135,7 @@
 			// ### 로그DB 서비스 이용
 
 			// #### 쿼리 인스턴스 생성
-			instance = serviceLogdb.create(pid);
+			instance = serviceLogdb.create(PID);
 
 			// #### 쿼리 및 이벤트 할당
 			var query = 'table ' + $scope.selectedTable;
