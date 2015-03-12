@@ -3,11 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.logpresso</groupId>
-		<artifactId>logpresso-examples</artifactId>
-		<version>1.0.0</version>
-	</parent>
 	<artifactId>app-tutorial</artifactId>
 	<packaging>bundle</packaging>
 	<name>App Tutorial</name>
@@ -61,6 +56,19 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>araqne</id>
+			<name>Araqne Maven Repository</name>
+			<layout>default</layout>
+			<url>http://staging.araqne.org/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.araqne</groupId>
@@ -78,4 +86,6 @@
 			<version>0.4.3</version>
 		</dependency>
 	</dependencies>
+	<groupId>com.logpresso</groupId>
+	<version>1.0.0</version>
 </project>
